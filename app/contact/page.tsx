@@ -13,3 +13,8 @@ const page = () => {
 }
 
 export default page
+
+
+
+
+// , "lint": "next lint"
