@@ -1,0 +1,44 @@
+.card {
+    position: relative;
+    display: flex;
+    background-color: gray;
+    width: 15vw;
+    height: 40vh;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    
+
+}
+
+.title {
+    top: 0;
+    position: absolute;
+    
+    
+}
+
+.image {
+    object-fit: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
+    inset: 0;
+    width: auto;
+    height: 100%;
+}
+
+.description {
+    text-align: center;
+    padding: 10px;
+    height: 10%;
+    top: 80%;
+    background-color: black;
+    width: 100%;
+    bottom: 10px;
+    position: absolute;
+}
