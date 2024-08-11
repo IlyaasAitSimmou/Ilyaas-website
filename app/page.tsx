@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="home_body">
-      <h1 className="header 1">Ilyaas' Website</h1>
+      <h1 className="header 1">Ilyaas&apos; Website</h1>
       {/* <h3 className="header 2">Coded with Next.js and React with TypeScript</h3> */}
       <SymbolParagraphs text={'Coded with ? and ? with ?'} 
       imageList={
@@ -23,7 +23,7 @@ export default function Home() {
         Who am I
       </Link>
       <Link href='/projects'>
-        What I've done
+        What I&apos;ve done
       </Link>
     </main>
 
