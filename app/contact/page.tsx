@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { sql } from '@vercel/postgres';
+import { postgresConnectionString, sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
 const Page = () => {
@@ -12,28 +12,53 @@ const Page = () => {
   const [errorMessage, setErrorMessage] = useState('e')
 
   const signUp = async () => {
-    if (email && username && password && confirmation) {
-      if (password !== confirmation) {
-        return '';
+    const res = await fetch('/api/sign_up', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        username,
+        password,
+        confirmation,
+        about
+      }),
+    })
+    .then((res) => res.json())
+    .then((resData) => {
+      console.log(resData)
+      if (resData.username) {
+        setErrorMessage(`${resData.username}'s account was created successfully`)
       } else {
-        try {
-          setErrorMessage('ewewrw')
-          await sql`INSERT INTO users (email, username, description, password) VALUES (${email}, ${username}, ${about}, ${password});`;
-          setErrorMessage('ewewrw')
-        } catch (error) {
-          console.log('error3')
-          return NextResponse.json({ error }, { status: 500 });
-        }
+        setErrorMessage(`Account was not created because ${resData.error}`)
+      }
+    })
+  }
+  // const signUp = async () => {
+  //   if (email && username && password && confirmation) {
+  //     console.log('POSTGRES_URL:', process.env.POSTGRES_URL);
+  //     console.log('pass1')
+  //     if (password !== confirmation) {
+  //       return '';
+  //     } else {
+  //       try {
+  //         setErrorMessage('trying')
+  //         await sql`INSERT INTO users (email, username, description, password) VALUES (${email}, ${username}, ${about}, ${password});`;
+  //       } catch (error) {
+  //         setErrorMessage('failed')
+  //         console.log(error)
+  //         return NextResponse.json({ error }, { status: 500 });
+  //       }
       
-        const users = await sql`SELECT * FROM users;`;
-        console.log(`here is ${users}`)
-        return NextResponse.json({ users }, { status: 200 });
-        }
-      } else {
-      return ''
-    }
+  //       const users = await sql`SELECT * FROM users;`;
+  //       setErrorMessage('success')
+  //       console.log(`here is ${users}`)
+  //       return NextResponse.json({ users }, { status: 200 });
+  //       }
+  //     } else {
+  //       console.log('error1')
+  //     return ''
+  //   }
       
-    }
+  //   }
   return (
     <div>
         <h1>Contacting me</h1>
@@ -41,14 +66,15 @@ const Page = () => {
         <h5>You can contact me via email, instagram, Linkedin, or phone</h5>
         <h3>Or you can contact me by making an account</h3>
         <h5>Try it out. You have yet to see one of my greatest surprises</h5>
-        <form action='#' onSubmit={() => {
+        <form onSubmit={(e) => {
+          e.preventDefault()
           signUp()
           }}>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='email'/>
             <input type="text" value={username} onChange={(e) => setUserame(e.target.value)} placeholder='username'/>
             <input type="password" value={password} onChange={(e) => {
               setPassword(e.target.value)
-              console.log('e')
+              console.log('eEUQEIRHUWIQHFUIQWFOIQJFUROQJJFIOQJFEIOJFQOIJEOIQJFQIO')
             }
               } placeholder='password'/>
             <input type="password" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} placeholder='confirm password'/>
@@ -63,6 +89,9 @@ const Page = () => {
 export default Page
 
 
-
+// onSubmit={(event) => {
+//   event.preventDefault()
+          
+// }}
 
 // , "lint": "next lint"
