@@ -26,9 +26,30 @@ const Page = () => {
     .then((resData) => {
       console.log(resData)
       if (resData.username) {
-        setErrorMessage(`${resData.username}'s account was created successfully`)
+        setErrorMessage(`${resData.username}'s account was created successfully. An email has been send to ${resData.email} for verification. Do not close this tab`)
+        verifyAccount(resData.username, resData.email, 'somewhere')
       } else {
         setErrorMessage(`Account was not created because ${resData.error}`)
+      }
+    })
+  }
+
+  const verifyAccount = async (username: string, email: string, link: string) => {
+    const res = await fetch('/api/emails', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        email,
+        link
+      }),
+    })
+    .then((res) => res.json())
+    .then((resData) => {
+      console.log(resData)
+      if (resData.accepted) {
+        setErrorMessage(resData.accepted)
+      } else {
+        setErrorMessage(resData.message)
       }
     })
   }
