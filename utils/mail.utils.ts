@@ -3,12 +3,13 @@ import Mail from 'nodemailer/lib/mailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
 const transport = notemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
-    secure: process.env.NODE_ENV !== 'development',
+    service: 'gmail',
+    host: process.env.EMAIL_HOST,
+    port: 587,
+    secure: true,
     auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSWORD,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
     }, 
 } as SMTPTransport.Options)
 
