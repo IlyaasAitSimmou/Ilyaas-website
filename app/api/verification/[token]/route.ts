@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
+import { envSite } from '@/lib'
 
 export async function GET(request: Request, { params }: { params: { token: string } }) {
     const token = params.token
     console.log('token: ', token)
-    await fetch(`http://ilyaas-website.vercel.app/api/verify`, {
+    await fetch(`${envSite}api/verify`, {
       method: 'POST',
       body: JSON.stringify({
           token
@@ -13,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { token: strin
     .then((resData) => {
     console.log(resData)
     if (resData.message) {
-      redirect('/contact')
+      redirect('/profile')
     }
   })
 }
