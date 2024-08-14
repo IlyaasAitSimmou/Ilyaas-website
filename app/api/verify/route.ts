@@ -1,15 +1,15 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+
 export async function POST(request: Request) {
     let reqJson = await request.json();
     console.log(reqJson)
-    const email = reqJson.email;
+    const token = reqJson.token;
 
-
-   
     try {
-      await sql`UPDATE users SET verified = TRUE, logged_in = TRUE WHERE email = ${email};`;
+      const user = await sql`UPDATE users SET verified = TRUE, logged_in = TRUE WHERE verification_token = ${token} RETURNING *;`;
+      console.log(user)
     } catch (error) {
       console.log(error)
       return NextResponse.json({ error }, { status: 500 });

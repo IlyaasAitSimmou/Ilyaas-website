@@ -23,9 +23,9 @@ const SignUpForm = () => {
         .then((res) => res.json())
         .then((resData) => {
         console.log(resData)
-        if (resData.username) {
-            setErrorMessage(`${resData.username}'s account was created successfully. An email has been send to ${resData.email} for verification. Do not close this tab`)
-            verifyAccount(resData.username, resData.email, 'somewhere')
+        if (resData.username && resData.token) {
+            setErrorMessage(`${resData.username}'s account was created successfully. An email has been send to ${resData.email} for verification. Do not close this tab. You have 5 minutes to verify your account before it is automatically deleted.`)
+            verifyAccount(resData.username, resData.email, 'http://ilyaas-website.vercel.app/' + `api/verification/${resData.token}`)
         } else {
             setErrorMessage(`Account was not created because ${resData.error}`)
         }

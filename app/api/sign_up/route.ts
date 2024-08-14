@@ -22,6 +22,7 @@ import { NextResponse } from 'next/server';
 //   const users = await sql`SELECT * FROM users;`;
 //   return NextResponse.json({ users }, { status: 200 });
 // }
+
 export async function POST(request: Request) {
   let reqJson = await request.json();
   console.log(reqJson)
@@ -30,19 +31,28 @@ export async function POST(request: Request) {
   const password = reqJson.password;
   const confirmation = reqJson.confirmation;
   const description = reqJson.about;
-  console.log(email, username, password, confirmation, description, request.url)
+  let token: any = ''
+  // console.log(email, username, password, confirmation, description, request.url)
  
   try {
     if (!email || !username || !password) throw new Error('Missing fields');
     if (password !== confirmation) throw new Error('Passwords do not match!');
     if (password.length < 8) throw new Error('Password is too short')
-    await sql`INSERT INTO users (email, username, description, password) VALUES (${email}, ${username}, ${description}, ${password});`;
+    token = await sql`INSERT INTO users (email, username, description, password, verification_token) VALUES (${email}, ${username}, ${description}, ${password}, gen_random_uuid()) RETURNING verification_token;`;
+    token = token.rows[0].verification_token
+    console.log('verification_token: ', token)
   } catch (error) {
     console.log(error)
     return NextResponse.json({ error }, { status: 500 });
   }
  
-  const users = await sql`SELECT * FROM users;`;
-  console.log(users)
-  return NextResponse.json({ username, email }, { status: 200 });
+  const users = await sql`SELECT * FROM users ;`;
+  // console.log(users)
+  setTimeout(() => deleteAccount(email, username), 300000)
+  return NextResponse.json({ username, email, token }, { status: 200 });
+}
+
+async function deleteAccount(email: string, username: string) {
+  await sql`DELETE FROM users WHERE email = ${email} AND verified = FALSE AND logged_in = FALSE;`;
+  console.log('account deleted')
 }
