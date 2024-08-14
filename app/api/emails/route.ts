@@ -1,7 +1,6 @@
 import { sendEmail } from "@/utils/mail.utils";
 
 export async function POST(request: Request) {
-    console.log(process.env.EMAIL_HOST, process.env.EMAIL_USER, process.env.EMAIL_PASS)
     let reqJson = await request.json();
     console.log(reqJson)
     const user = reqJson.username

@@ -43,5 +43,6 @@ export async function POST(request: Request) {
   }
  
   const users = await sql`SELECT * FROM users;`;
+  console.log(users)
   return NextResponse.json({ username, email }, { status: 200 });
 }
