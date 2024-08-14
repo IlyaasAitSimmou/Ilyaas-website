@@ -22,7 +22,6 @@ type sendEmailDto = {
 
 export const sendEmail = async (dto: sendEmailDto) => {
     const { sender, recipients, subject, message } = dto
-    console.log(process.env.EMAIL_HOST, process.env.EMAIL_USER, process.env.EMAIL_PASS)
     return await transport.sendMail({
         from: sender,
         to: recipients,

@@ -33,6 +33,7 @@ const SignUpForm = () => {
     }
 
     const verifyAccount = async (username: string, email: string, link: string) => {
+        console.log(process.env.EMAIL_HOST, process.env.EMAIL_USER, process.env.EMAIL_PASS)
         const res = await fetch('/api/emails', {
         method: 'POST',
         body: JSON.stringify({
