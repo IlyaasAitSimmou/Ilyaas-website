@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export type Draw = {
     context: CanvasRenderingContext2D
@@ -29,30 +29,23 @@ export const useDraw = (onDraw: ({context, currentPoint, prevPoint}: Draw) => vo
     }
 
     useEffect(() => {
+        const canvasEl = canvasRef.current
+
+        const computePointInCanvas = (e: MouseEvent) => {
+            if (!canvasEl) return
+            const rect = canvasEl.getBoundingClientRect()
+            const x = e.clientX - rect.left
+            const y = e.clientY - rect.top
+            return { x, y }
+        }
 
         const handler = (e: MouseEvent) => {
             if (!mouseDown) return
-
-            console.log({x: e.clientX, y: e.clientY})
             const currentPoint = computePointInCanvas(e)
-
-            const context = canvasRef.current?.getContext('2d')
+            const context = canvasEl?.getContext('2d')
             if (!context || !currentPoint) return
-
-            onDraw({context, currentPoint, prevPoint: prevPoint.current})
+            onDraw({ context, currentPoint, prevPoint: prevPoint.current })
             prevPoint.current = currentPoint
-
-        }
-
-        const computePointInCanvas = (e: MouseEvent) => {
-            const canvas = canvasRef.current
-            if (!canvas) return
-
-            const rect = canvas.getBoundingClientRect()
-            const x = e.clientX - rect.left
-            const y = e.clientY - rect.top
-
-            return {x, y}
         }
 
         const mouseUpHandler = () => {
@@ -60,15 +53,14 @@ export const useDraw = (onDraw: ({context, currentPoint, prevPoint}: Draw) => vo
             prevPoint.current = null
         }
 
-        canvasRef.current?.addEventListener('mousemove', handler)
+        canvasEl?.addEventListener('mousemove', handler)
         window.addEventListener('mouseup', mouseUpHandler)
 
         return () => {
-            canvasRef.current?.removeEventListener('mousemove', handler)
-            canvasRef.current?.removeEventListener('mouseup', mouseUpHandler)
+            canvasEl?.removeEventListener('mousemove', handler)
+            window.removeEventListener('mouseup', mouseUpHandler)
         }
-
-    }, [onDraw])
+    }, [onDraw, mouseDown])
 
     return { canvasRef, onMouseDown, clear }
 
