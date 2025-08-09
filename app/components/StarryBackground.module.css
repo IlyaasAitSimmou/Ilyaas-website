@@ -1,0 +1,167 @@
+.starryBackground {
+    position: absolute;
+    /* top: -50px; */
+    left: 0;
+    width: 100vw;
+    height: 300vh;
+    background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 50%, #0f001c 100%);
+    /* background: #0f001c; */
+    z-index: -2;
+    overflow: visible;
+}
+
+.starsContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+}
+
+.skyOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 30%, #1e40af 70%, #0f001c 100%);
+    transition: opacity 1s ease-in-out;
+}
+
+.cloudsContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+}
+
+.star {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
+    animation: twinkle infinite ease-in-out;
+}
+
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50px;
+    opacity: 0.8;
+    animation: cloudFloat linear infinite;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50px;
+}
+
+.cloud::before {
+    width: 80%;
+    height: 80%;
+    top: -40%;
+    left: 10%;
+}
+
+.cloud::after {
+    width: 60%;
+    height: 60%;
+    top: -20%;
+    right: 15%;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes cloudFloat {
+    0% {
+        transform: translateX(-20%);
+    }
+    100% {
+        transform: translateX(120vw);
+    }
+}
+
+/* Add some variety with different star types */
+.star:nth-child(3n) {
+    background: #ffd700;
+    box-shadow: 0 0 6px #ffd700, 0 0 12px #ffd700;
+}
+
+.star:nth-child(5n) {
+    background: #87ceeb;
+    box-shadow: 0 0 6px #87ceeb, 0 0 12px #87ceeb;
+}
+
+.star:nth-child(7n) {
+    background: #ffb6c1;
+    box-shadow: 0 0 6px #ffb6c1, 0 0 12px #ffb6c1;
+}
+
+/* Shooting star animation (occasional) */
+.star:nth-child(50n) {
+    animation: shootingStar 8s linear infinite;
+    width: 2px !important;
+    height: 2px !important;
+    background: #ffffff;
+}
+
+@keyframes shootingStar {
+    0% {
+        transform: translateX(-100px) translateY(-100px);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(200px) translateY(200px);
+        opacity: 0;
+    }
+}
+
+
+.title {
+    position: absolute;
+    top: 20%;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    color: #fff7cb;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    font-family: 'Arial', sans-serif;
+    z-index: 1;
+}
+
+.titleContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+}
+
+.cyclingWord {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+    color: #4fc3f7; /* Light blue color to make it stand out */
+    font-weight: bold;
+}
+
+.cyclingWord.fadeOut {
+    opacity: 0;
+}

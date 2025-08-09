@@ -8,12 +8,13 @@ interface pageProps {}
 
 const DrawingCanvas: FC<pageProps> = () => {
     const [color, setColor] = useState('#000')
+    const [brushWidth, setBrushWidth] = useState(5)
     const { canvasRef, onMouseDown, clear } = useDraw(drawLine)
 
     function drawLine({prevPoint, currentPoint, context}: Draw) {
         const {x: currX, y: currY} = currentPoint
         const lineColor = color
-        const lineWidth = 5
+        const lineWidth = brushWidth
 
         let startPoint = prevPoint ?? currentPoint
         context.beginPath()
@@ -25,7 +26,7 @@ const DrawingCanvas: FC<pageProps> = () => {
 
         context.fillStyle = lineColor
         context.beginPath()
-        context.arc(startPoint.x, startPoint.y, 2, 0, 2*Math.PI)
+        context.arc(startPoint.x, startPoint.y, lineWidth/2.5, 0, (lineWidth/2.5)*Math.PI)
         context.fill()
     }
     
@@ -33,7 +34,8 @@ const DrawingCanvas: FC<pageProps> = () => {
         <div>
             <ChromePicker color={color} onChange={(e) => setColor(e.hex)}/>
             <button type="button" onClick={clear}>Clear</button>
-            <canvas onMouseDown={onMouseDown} ref={canvasRef} width={400} height={300} style={{
+            <input type="range" value={brushWidth} onChange={e => setBrushWidth(parseInt(e.target.value))}/>
+            <canvas className='DrawingCanvas' onMouseDown={onMouseDown} ref={canvasRef} width={400} height={300} style={{
                 borderStyle: 'solid',
                 borderColor: 'black',
                 borderWidth: 5,

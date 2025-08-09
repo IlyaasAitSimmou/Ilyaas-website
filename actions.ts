@@ -15,6 +15,13 @@ export const getSession = async () => {
     return session;
 }
 
+export const getUserPosts = async (session: SessionData) => {
+    console.log(session.userId)
+    const posts = await sql`SELECT * FROM posts WHERE user_id = ${session.userId};`
+    console.log(posts.rows)
+    return posts.rows
+  }
+
 export const login = async (prevState: { error: undefined | string }, formdata: FormData) => {
     const session = await getSession()
     

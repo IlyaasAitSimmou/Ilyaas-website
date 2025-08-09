@@ -1,0 +1,22 @@
+.body {
+  background: transparent;
+  min-height: 300vh; /* Increased height to accommodate laptop section below rocket */
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.navBar {
+  align-self: center;
+  justify-self: center;
+  position: absolute;
+  top: 50px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  top: 0;
+  z-index: 10; /* Ensure navbar stays above background elements */
+}
+
+.navBar:hover {
+  top: -2px;
+}
