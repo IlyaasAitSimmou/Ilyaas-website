@@ -5,11 +5,19 @@ import { saveAs } from 'file-saver';
 
 const Page = () => {
     const [drawingName, setDrawingName] = useState('')
+
     const saveDrawing = () => {
-        const canvas = document.querySelector(".DrawingCanvas");
-        if (canvas) {canvas.toBlob(function(blob: Blob) {
-            saveAs(blob, `${drawingName}.png`);
-        })}
+        if (typeof document === 'undefined') return
+        const canvas = document.querySelector<HTMLCanvasElement>('canvas.DrawingCanvas')
+        if (!canvas) return
+        if (canvas.toBlob) {
+            canvas.toBlob((blob) => {
+                if (blob) saveAs(blob, `${drawingName || 'drawing'}.png`)
+            }, 'image/png')
+        } else {
+            const dataUrl = canvas.toDataURL('image/png')
+            fetch(dataUrl).then(res => res.blob()).then(blob => saveAs(blob, `${drawingName || 'drawing'}.png`))
+        }
     }
 
     return (

@@ -68,7 +68,7 @@ const skills = [
 ]
 
 const SkillsSection = () => {
-    const categories = [...new Set(skills.map(skill => skill.category))]
+    const categories = Array.from(new Set(skills.map(s => s.category)))
 
     return (
         <div className={styles.skillsSection}>

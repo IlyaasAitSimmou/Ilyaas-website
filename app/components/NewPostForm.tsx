@@ -1,3 +1,4 @@
+"use client"
 import { useState, ChangeEvent } from 'react'
 // import DrawingCanvas from './Canvas'
 import { useRouter } from 'next/navigation';
