@@ -32,8 +32,11 @@ const IntroOverlay = () => {
                 }, 1500);
             }
         }, 100); // Adjust speed here (100ms per character)
+        // 1400 ms
         
-        return () => clearInterval(typingInterval);
+        return () => {
+            clearInterval(typingInterval);
+        };
     }, []);
 
     if (!isVisible) return null;

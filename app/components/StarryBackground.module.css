@@ -2,7 +2,7 @@
     position: absolute;
     /* top: -50px; */
     left: 0;
-    width: 100vw;
+    width: 100%; /* was 100vw causing horizontal overflow when scrollbar present */
     height: 300vh;
     background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 50%, #0f001c 100%);
     /* background: #0f001c; */
@@ -89,7 +89,7 @@
         transform: translateX(-20%);
     }
     100% {
-        transform: translateX(120vw);
+        transform: translateX(140%); /* use percentages not vw to avoid widening layout */
     }
 }
 

@@ -12,6 +12,10 @@
     z-index: 9999;
     opacity: 1;
     transition: opacity 0.5s ease-out;
+    /* Prevent any interaction with underlying content */
+    pointer-events: all;
+    /* Ensure overlay is above everything */
+    isolation: isolate;
 }
 
 .overlay.fadeOut {
@@ -24,7 +28,7 @@
 
 .typingText {
     font-family: 'Courier New', monospace;
-    font-size: 2.5rem;
+    font-size: 6rem;
     color: #fff7cb;
     white-space: nowrap;
     overflow: hidden;

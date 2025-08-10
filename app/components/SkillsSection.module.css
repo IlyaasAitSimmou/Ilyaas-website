@@ -77,22 +77,31 @@
     box-shadow: 0 8px 25px rgba(79, 195, 247, 0.3);
 }
 
-.skillIcon {
-    width: 60px;
-    height: 60px;
+/* New square logo wrapper (replaces circular .skillIcon usage for logos) */
+.logoWrapper {
+    width: 56px; /* default square */
+    height: 56px;
+    border-radius: 14px; /* rounded corners */
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(79, 195, 247, 0.1);
-    border-radius: 50%;
-    border: 2px solid rgba(79, 195, 247, 0.3);
-    transition: all 0.3s ease;
+    background: rgba(79,195,247,0.15); /* fallback */
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 4px 10px -2px rgba(0,0,0,0.4);
+    transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    overflow: hidden;
+    position: relative; /* for next/image fill */
 }
 
-.skillItem:hover .skillIcon {
-    background: rgba(79, 195, 247, 0.2);
-    border-color: #4fc3f7;
-    transform: scale(1.1);
+.skillItem:hover .logoWrapper {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 0 1px rgba(79,195,247,0.6), 0 6px 18px -2px rgba(79,195,247,0.35);
+}
+
+.logoWrapper img { /* next/image rendered <img> */
+    width: auto; /* allow inline overrides */
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .iconText {
@@ -131,14 +140,8 @@
         min-width: 100px;
     }
     
-    .skillIcon {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .iconText {
-        font-size: 1.5rem;
-    }
+    .logoWrapper { width:48px; height:48px; border-radius:12px; }
+    .logoWrapper img { height: 100%; width: auto; }
 }
 
 @media (max-width: 480px) {
@@ -149,4 +152,7 @@
     .categorySection {
         padding: 20px;
     }
-} 
+    
+    .logoWrapper { width:44px; height:44px; border-radius:10px; }
+    .logoWrapper img { height: 100%; width: auto; }
+}

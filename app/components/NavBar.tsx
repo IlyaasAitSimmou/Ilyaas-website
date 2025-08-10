@@ -15,10 +15,10 @@ const NavBar = async ({ styling }: NavBarProps) => {
 
     return (
         <nav className={`${styles.navbar} ${styling || ''}`}>
-            <Link href='/'>Home</Link>
-            <Link href='/about'>About Me</Link>
-            <Link href='/projects'>My projects</Link>
-            <Link href='/contact'>Contact</Link>
+            <Link className={styles.navLink} href='/'>Home</Link>
+            <Link className={styles.navLink} href='/about'>About Me</Link>
+            <Link className={styles.navLink} href='/projects'>My projects</Link>
+            <Link className={styles.navLink} href='/contact'>Contact</Link>
             {/* {
                 !session.logged_in && 
                 <>

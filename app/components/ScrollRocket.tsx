@@ -16,6 +16,7 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
     const bloomEffectRef = useRef<BloomEffect>()
     const [animationComplete, setAnimationComplete] = useState(false)
     const [finalPosition, setFinalPosition] = useState({ x: 0, y: 0, rotation: 0, scale: 1 })
+    // const [rocketStarted, setRocketStarted] = useState(false)
 
     useEffect(() => {
         if (!mountRef.current) return
@@ -312,6 +313,9 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
             scene.add(rocketGroup)
             rocketRef.current = rocketGroup
         }
+        // if (!rocketStarted && rocketRef.current?.visible) {
+        //     rocketRef.current.visible = false
+        // }
 
         // Create the procedural rocket immediately
         createProceduralRocket()
@@ -469,10 +473,11 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
                 }
                 rocketRef.current.visible = false
             }
+            
         }
 
         window.addEventListener('scroll', handleScroll)
-
+        handleScroll()
         // Handle window resize
         const handleResize = () => {
             camera.aspect = window.innerWidth / window.innerHeight
@@ -504,7 +509,7 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
         left: 0, 
         zIndex: 5000, 
         pointerEvents: 'none',
-        width: '100vw',
+        width: '100%', // was 100vw causing horizontal scroll when scrollbar present
         minHeight: '100vh',
         overflow: 'visible'
     }} />

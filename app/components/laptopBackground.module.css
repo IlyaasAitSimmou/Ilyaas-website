@@ -1,6 +1,6 @@
 .laptopContainer {
     position: relative;
-    width: 100vw;
+    width: 100%; /* was 100vw causing overflow */
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -21,7 +21,7 @@
 
 .laptopSection {
     position: relative;
-    width: 100vw;
+    width: 100%; /* was 100vw */
     height: 100vh;
     overflow: hidden;
 }
@@ -44,7 +44,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%; /* was 100vw */
     height: 100vh;
     background: rgba(0, 0, 0, 0.95);
     z-index: 1000;
@@ -55,7 +55,7 @@
 
 .fullscreenContent {
     position: relative;
-    width: 90vw;
+    width: 90%; /* was 90vw */
     height: 90vh;
     background: #1a1a2e;
     border: 2px solid #4fc3f7;

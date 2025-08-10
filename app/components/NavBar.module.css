@@ -1,24 +1,103 @@
-
 .navbar {
+    /* Layout */
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 400px;
-    padding: 10px 20px;
-    background-color: #333;
-    border-radius: 20px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #ff0000;
-    transition: all 0.3s ease;
+    gap: 28px;
+    padding: 12px 36px;
+
+    /* Remove fixed width for responsiveness */
+    width: max-content;
+    max-width: 100%;
+
+    /* Visual style (match skills section aesthetic) */
+    background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(79,195,247,0.25);
+    border-radius: 32px;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 2px 6px -2px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05), 0 0 18px -4px rgba(79,195,247,0.55);
+
+    /* Border glow accent using outline technique */
+    position: absolute;
+    top: 0px;
+    transition: box-shadow .35s ease, border-color .35s ease, background .35s ease, transform .35s ease;
 }
+
 .navbar:hover {
-    background-color: #444;
+    box-shadow: 0 4px 14px -2px rgba(0,0,0,0.55), 0 0 0 1px rgba(79,195,247,0.65), 0 0 28px -2px rgba(79,195,247,0.75);
+    border-color: rgba(79,195,247,0.55);
+    transform: translateY(-2px);
 }
 
-.navbar a {
-    color: white;
+.navLink {
+    position: relative;
+    color: #ffffff;
     text-decoration: none;
-    margin: 0 15px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 8px 16px; /* more tappable */
+    border-radius: 18px;
+    transition: color .35s ease;
+    isolation: isolate; /* keep glow contained */
+}
 
+/* Remove old underline effect; new layered glow */
+.navLink::before,
+.navLink::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(.6) translateY(6px);
+    transition: opacity .45s cubic-bezier(.4,.8,.3,1), transform .55s cubic-bezier(.4,.8,.3,1), filter .55s ease;
+}
+
+/* Inner glass highlight */
+.navLink::before {
+    background: linear-gradient(135deg, rgba(79,195,247,0.22) 0%, rgba(79,195,247,0.08) 60%, rgba(255,255,255,0.04) 100%);
+    box-shadow: 0 0 0 0 rgba(79,195,247,0.6) inset, 0 0 0 0 rgba(79,195,247,0.35);
+    backdrop-filter: blur(4px) saturate(160%);
+    -webkit-backdrop-filter: blur(4px) saturate(160%);
+}
+
+/* Outer aura */
+.navLink::after {
+    background: radial-gradient(circle at 50% 60%, rgba(79,195,247,0.55), rgba(79,195,247,0) 70%);
+    filter: blur(14px);
+}
+
+.navLink:hover, .navLink:focus-visible, .active {
+    color: #4fc3f7;
+}
+
+.navLink:hover::before,
+.navLink:focus-visible::before,
+.active::before { opacity: 1; transform: scale(1) translateY(0); box-shadow: 0 0 0 1px rgba(79,195,247,0.55) inset, 0 0 18px -4px rgba(79,195,247,0.65); }
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.active::after { opacity: .9; transform: scale(1) translateY(0); }
+
+.navLink:focus-visible { outline: none; }
+
+/* Active state utility (can be applied manually or later via path detection) */
+.active {
+    color: #4fc3f7;
+}
+.active::after {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+}
+
+/* Compact on very small screens */
+@media (max-width: 560px) {
+    .navbar {
+        gap: 18px;
+        padding: 10px 20px;
+        border-radius: 26px;
+    }
+    .navLink { font-size: 0.85rem; padding: 6px 12px; }
 }

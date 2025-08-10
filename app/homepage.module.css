@@ -18,4 +18,65 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    width: 100%; /* ensure no unintended 100vw usage here */
+    overflow-x: clip; /* just in case child uses large translate */
+}
+
+/* Animated gradient for typing text */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.typingText, .typingText2, .typingTextTransitioning {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    left: 50%;
+}
+
+.typingText {
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6rem;
+    transition: top 0.8s ease, transform 0.8s ease, font-size 0.8s ease;
+    /* gradient text */
+    background: linear-gradient(90deg, #4fc3f7, #8191fa, #4fc3f7);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 3s ease infinite;
+}
+
+.typingTextTransitioning {
+    position: fixed;
+    top: 200px;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    transition: top 0.8s ease, transform 0.8s ease, font-size 0.8s ease;
+    /* gradient text */
+    background: linear-gradient(90deg, #4fc3f7, #81d4fa, #4fc3f7);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 3s ease infinite;
+}
+
+.typingText2 {
+    position: absolute;
+    top: 200px;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    /* gradient text */
+    background: linear-gradient(90deg, #4fc3f7, #81d4fa, #4fc3f7);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 3s ease infinite;
 }

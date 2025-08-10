@@ -10,6 +10,7 @@ import IntroOverlay from "./components/IntroOverlay";
 import StarryBackground from "./components/StarryBackground";
 import ThreeJsPlanets from "./components/ThreeJsPlanets";
 import ScrollRocket from "./components/ScrollRocket";
+import ScrollReset from "./components/ScrollReset";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${styles.body}`}>
-        
+        <ScrollReset />
         <NavBar styling={styles.navBar} />
         <IntroOverlay/>
         {children}

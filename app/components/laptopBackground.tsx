@@ -56,10 +56,15 @@ const LaptopBackground = () => {
 
     interface CardDef { id: string; title: string; desc: string; color: string; link: string }
     const cardsRef = useRef<CardDef[]>([
-        { id: 'c1', title: 'Portfolio Website', desc: 'My personal portfolio built with Next.js and Three.js', color: '#4fc3f7', link: '/projects' },
-        { id: 'c2', title: 'Rocket Simulation', desc: '3D rocket simulation with physics', color: '#ff6b6b', link: '/projects' },
-        { id: 'c3', title: 'AI Chat Bot', desc: 'Machine learning chatbot project', color: '#51cf66', link: '/projects' },
-        { id: 'c4', title: 'Game Development', desc: 'Unity game development projects', color: '#ffd43b', link: '/projects' },
+        { id: 'c1', title: 'Portfolio Website', desc: 'The project you are looking at right now!', color: '#4fc3f7', link: '/projects' },
+        { id: 'c2', title: 'Rocket Simulation', desc: '3D simulator to replay model rocket flights based on sensor data.', color: '#ff6b6b', link: '/projects' },
+        { id: 'c3', title: 'SpendWise', desc: 'A web application that tracks and evaluates user spending habits by scanning receipts and provides alternatives based on location.', color: '#51cf66', link: '/projects' },
+        { id: 'c4', title: 'SIMAD Foundation', desc: 'The official website of SIMAD, an organization focused on providing students with competition-based learning experiences.', color: '#ffd43b', link: '/projects' },
+        { id: 'c5', title: 'Flappy Fitness', desc: 'An exercise-controlled variant of Flappy Bird built with Pygame and OpenCV', color: '#ff9f43', link: '/projects' },
+        { id: 'c6', title: 'Numina', desc: 'A web application that instantly turns any topic into a narrated math animation with a live AI agent for personalized tutoring.', color: '#ff9f43', link: '/projects' },
+        { id: 'c7', title: 'Classcade', desc: 'A Google Classroom like platform where learning is gamified and player stats improve with student diligence.', color: '#ff6f61', link: '/projects' },
+        { id: 'c8', title: 'upNotes.ai', desc: 'A full-stack LLM based application that helps students take better notes, practice concepts, and improve their grades', color: '#ff6f61', link: '/projects' },
+        
     ])
     type HitRegion = { id: string; x: number; y: number; w: number; h: number; link: string }
     const hitRegionsRef = useRef<HitRegion[]>([])
@@ -520,7 +525,7 @@ const LaptopBackground = () => {
                                         <div style={{ flex: 1 }}>
                                             <h3 style={{ margin: '0 0 8px', color: '#4fc3f7', fontFamily: 'Arial', fontWeight: 600 }}>{card.title}</h3>
                                             <p style={{ margin: 0, color: '#ccc', lineHeight: 1.4 }}>{card.desc}</p>
-                                            <span style={{ display: 'inline-block', marginTop: 12, color: '#4fc3f7', fontWeight: 600 }}>Open →</span>
+                                            <span style={{ display: 'inline-block', marginTop: 12, color: '#4fc3f7', fontWeight: 600 }}>Click to view →</span>
                                         </div>
                                     </div>
                                 ))}
