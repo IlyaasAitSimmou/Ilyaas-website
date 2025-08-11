@@ -1,14 +1,19 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import LogoutForm from './LogoutForm'
 import { getSession } from '@/actions'
 import styles from './NavBar.module.css'
+import { useAnimationSettings } from './AnimationSettings'
 
 interface NavBarProps {
     styling?: string;
 }
 
-const NavBar = async ({ styling }: NavBarProps) => {
+const NavBar = ({ styling }: NavBarProps) => {
+    const { animationsEnabled, toggleAnimations } = useAnimationSettings()
+    
     // const session = await getSession()
     // console.log(session)
     // console.log(session.logged_in)
@@ -19,6 +24,20 @@ const NavBar = async ({ styling }: NavBarProps) => {
             <Link className={styles.navLink} href='/about'>About Me</Link>
             <Link className={styles.navLink} href='/projects'>My projects</Link>
             <Link className={styles.navLink} href='/contact'>Contact</Link>
+            
+            {/* Animation Toggle Slider */}
+            <div className={styles.animationToggle}>
+                <span className={styles.toggleLabel}>Animations</span>
+                <label className={styles.switch}>
+                    <input 
+                        type="checkbox" 
+                        checked={animationsEnabled}
+                        onChange={(e) => toggleAnimations(e.target.checked)}
+                    />
+                    <span className={styles.slider}></span>
+                </label>
+            </div>
+            
             {/* {
                 !session.logged_in && 
                 <>

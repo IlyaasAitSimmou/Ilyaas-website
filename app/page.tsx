@@ -12,9 +12,11 @@ import ThreeJsPlanets from "./components/ThreeJsPlanets";
 import ScrollRocket from "./components/ScrollRocket";
 import LaptopBackground from "./components/laptopBackground";
 import SkillsSection from "./components/SkillsSection";
+import { useAnimationSettings, ANIMATION_TIMINGS, getTotalAnimationDuration } from "./components/AnimationSettings";
 // import styles from "./homepage.module.css";
 
 export default function Home() {
+  const { animationsEnabled } = useAnimationSettings()
   const [typingTextVisible, setTypingTextVisible] = useState(false);
   const [typingTextTransitioning, setTypingTextTransitioning] = useState(false);
   const [typingTextFinal, setTypingTextFinal] = useState(false);
@@ -28,6 +30,15 @@ export default function Home() {
       if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
+    }
+    
+    // If animations are disabled, skip the intro sequence
+    if (!animationsEnabled) {
+      setTypingTextVisible(true);
+      setTypingTextTransitioning(true);
+      setTypingTextFinal(true);
+      setIntroComplete(true);
+      return;
     }
     
     // Prevent scrolling during the entire intro sequence (multiple methods for cross-browser compatibility)
@@ -51,8 +62,13 @@ export default function Home() {
     document.addEventListener('touchmove', preventTouchScroll, { passive: false });
     document.addEventListener('wheel', preventWheelScroll, { passive: false });
     
+    // Use synchronized timing constants
     const timer = setTimeout(() => {
       setTypingTextVisible(true);
+      
+      // Calculate typing duration based on text length
+      const typingDuration = ANIMATION_TIMINGS.TYPING_SPEED * "Hey! I'm Ilyaas".length;
+      
       setTimeout(() => {
         // Start transition animation
         setTypingTextTransitioning(true);
@@ -69,10 +85,10 @@ export default function Home() {
             document.body.style.height = '';
             document.removeEventListener('touchmove', preventTouchScroll);
             document.removeEventListener('wheel', preventWheelScroll);
-          }, 500); // Extra delay to ensure text is visually settled
-        }, 800); // Match CSS transition duration
-      }, 2000)
-    }, 1600); // Show text after 1 second
+          }, ANIMATION_TIMINGS.FINAL_SETTLE_DELAY);
+        }, ANIMATION_TIMINGS.TRANSITION_DURATION);
+      }, typingDuration + ANIMATION_TIMINGS.TYPING_COMPLETE_DELAY);
+    }, ANIMATION_TIMINGS.INTRO_DELAY);
     
     return () => {
       clearTimeout(timer);
@@ -84,10 +100,10 @@ export default function Home() {
       document.removeEventListener('touchmove', preventTouchScroll);
       document.removeEventListener('wheel', preventWheelScroll);
     };
-  }, []);
+  }, [animationsEnabled]);
   return (
     <main className={styles.homepage}>
-      {typingTextVisible && (
+      {animationsEnabled && typingTextVisible && (
         <span className={
           typingTextFinal 
             ? styles.typingText2
@@ -95,7 +111,7 @@ export default function Home() {
               ? styles.typingTextTransitioning
               : styles.typingText
         }>
-          Hey! I'm Ilyaas
+          Hey! I&apos;m Ilyaas
         </span>
       )}
       {/* Space/Rocket Section */}
@@ -106,7 +122,7 @@ export default function Home() {
       </div>
       
       {/* Laptop Section */}
-      <div style={{ position: 'relative', height: '100vh', width: '100%' /* was 100vw */ }}>
+      <div style={{ position: 'relative', height: '150vh', width: '100%' /* was 100vw */ }}>
         <LaptopBackground />
       </div>
 

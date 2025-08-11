@@ -19,7 +19,7 @@ const ThreeJsPlanets = () => {
         // Camera setup
         const camera = new THREE.PerspectiveCamera(
             110, // FOV in degrees
-            window.innerWidth / (3 * window.innerHeight),
+            window.innerWidth / (window.innerHeight * 3), // Correct aspect ratio for 3-section layout
             0.1,
             1000
         )
@@ -27,7 +27,7 @@ const ThreeJsPlanets = () => {
 
         // Renderer setup
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
-        renderer.setSize(window.innerWidth, (3 * window.innerHeight))
+        renderer.setSize(window.innerWidth, window.innerHeight * 3) // Use proper height for 3-section layout
         renderer.setClearColor(0x000000, 0) // Transparent background
         rendererRef.current = renderer
         mountRef.current.appendChild(renderer.domElement)
@@ -328,9 +328,9 @@ const ThreeJsPlanets = () => {
 
         // Handle window resize
         const handleResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight
+            camera.aspect = window.innerWidth / (window.innerHeight * 3) // Correct aspect ratio for 3-section layout
             camera.updateProjectionMatrix()
-            renderer.setSize(window.innerWidth, window.innerHeight)
+            renderer.setSize(window.innerWidth, window.innerHeight * 3) // Maintain 3-section height
         }
         window.addEventListener('resize', handleResize)
 

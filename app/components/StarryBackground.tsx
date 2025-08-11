@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './StarryBackground.module.css'
 import ScrollRocket from './ScrollRocket'
+import { useAnimationSettings } from './AnimationSettings'
 
 const StarryBackground = () => {
+    const { animationsEnabled } = useAnimationSettings()
     const starsRef = useRef<HTMLDivElement>(null)
     const cloudsRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -114,6 +116,9 @@ const StarryBackground = () => {
     
     // Word cycling effect
     useEffect(() => {
+        // Only cycle words if animations are enabled
+        if (!animationsEnabled) return
+
         const cycleWords = () => {
             setIsWordVisible(false) // Start fade out
             
@@ -128,7 +133,7 @@ const StarryBackground = () => {
         const intervalId = setInterval(cycleWords, 1500) // Change word every 2.5 seconds
         
         return () => clearInterval(intervalId)
-    }, [cyclingWords.length])
+    }, [cyclingWords.length, animationsEnabled])
     
 
     return (

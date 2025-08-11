@@ -1,12 +1,21 @@
 .laptopContainer {
     position: relative;
-    width: 100%; /* was 100vw causing overflow */
+    /* Always maintain base container size */
+    width: 100%;
     height: 100vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #0f001c;
+    
+    /* Apply scaling via transform - this keeps perfect centering */
+    transform: scale(var(--container-width-scale, 1), var(--container-height-scale, 1));
+    transform-origin: center center; /* Always scale from center */
+    
+    /* Ensure the scaled container doesn't cause overflow */
+    max-width: none; /* Remove width limits since transform handles scaling */
+    max-height: none; /* Remove height limits since transform handles scaling */
 }
 
 .laptopContainer canvas {
@@ -22,8 +31,53 @@
 .laptopSection {
     position: relative;
     width: 100%; /* was 100vw */
-    height: 100vh;
+    height: 100%; /* Restore fixed height */
     overflow: hidden;
+    /* Ensure the section can contain scaled children without causing page overflow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fullscreen button */
+.fullscreenButton {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(79,195,247,0.15) 0%, rgba(79,195,247,0.05) 100%);
+    border: 2px solid rgba(79,195,247,0.4);
+    border-radius: 50%;
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.fullscreenButton:hover {
+    background: linear-gradient(135deg, rgba(79,195,247,0.25) 0%, rgba(79,195,247,0.1) 100%);
+    border-color: rgba(79,195,247,0.8);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 25px rgba(79, 195, 247, 0.4);
+}
+
+.fullscreenIcon {
+    font-size: 24px;
+    color: #4fc3f7;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.fullscreenButton:hover .fullscreenIcon {
+    color: #ffffff;
+    transform: scale(1.1);
 }
 
 /* Screen overlay positioning */
@@ -96,29 +150,20 @@
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: white;
     font-family: 'Arial', sans-serif;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #4fc3f7 #1a1a2e;
-}
-
-.webpageContent::-webkit-scrollbar {
-    width: 8px;
-}
-
-.webpageContent::-webkit-scrollbar-track {
-    background: #1a1a2e;
-}
-
-.webpageContent::-webkit-scrollbar-thumb {
-    background: #4fc3f7;
-    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .webpageHeader {
     background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
+    padding: 30px;
     border-bottom: 2px solid #4fc3f7;
     text-align: center;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .webpageHeader h1 {
@@ -135,22 +180,39 @@
 }
 
 .webpageProjects {
-    padding: 20px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 24px;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #4fc3f7 #1a1a2e;
+}
+
+.webpageProjects::-webkit-scrollbar {
+    width: 8px;
+}
+
+.webpageProjects::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+
+.webpageProjects::-webkit-scrollbar-thumb {
+    background: #4fc3f7;
+    border-radius: 4px;
 }
 
 .projectCard {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 15px;
-    cursor: pointer;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 18px 22px;
+    cursor: default; /* Changed from pointer to default since cards are no longer clickable */
     transition: all 0.3s ease;
     display: flex;
-    align-items: center;
-    gap: 15px;
+    gap: 20px;
+    align-items: flex-start;
 }
 
 .projectCard:hover {
@@ -220,4 +282,98 @@
 
 .fullscreenContent .projectLink {
     font-size: 18px;
+}
+
+/* Icon button styles */
+.iconButton {
+    background: rgba(79, 195, 247, 0.1);
+    border: 1px solid rgba(79, 195, 247, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.iconButton:hover {
+    background: rgba(79, 195, 247, 0.2);
+    border-color: #4fc3f7;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(79, 195, 247, 0.3);
+}
+
+.iconButton img {
+    display: block;
+    object-fit: contain;
+}
+
+/* Custom play button styles to match 3D laptop */
+.playButton {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playTriangle {
+    width: 0;
+    height: 0;
+    border-left: 8px solid #4fc3f7;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    margin-left: 2px; /* Center the triangle */
+    transition: border-left-color 0.3s ease;
+}
+
+.iconButton:hover .playTriangle {
+    border-left-color: #ffffff;
+}
+
+/* Project image/gradient section styles */
+.projectImageSection {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.projectImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.projectCard:hover .projectImage {
+    transform: scale(1.05);
+}
+
+.projectGradient {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.projectCard:hover .projectGradient {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments for fullscreen project images */
+.fullscreenContent .projectImageSection {
+    width: 120px;
+    height: 120px;
+}
+
+.fullscreenContent .projectColor {
+    width: 20px;
+    height: 20px;
 }
