@@ -4,7 +4,7 @@
   max-width: 100%;
   overflow-x: hidden;
   background: transparent;
-  min-height: 300vh; /* Increased height to accommodate laptop section below rocket */
+  /* min-height: 300vh; Increased height to accommodate laptop section below rocket */
   margin: 0;
   padding: 0;
   position: relative;

@@ -14,6 +14,17 @@ interface NavBarProps {
 const NavBar = ({ styling }: NavBarProps) => {
     const { animationsEnabled, toggleAnimations } = useAnimationSettings()
     
+    // Smooth scroll function
+    const scrollToSection = (sectionId: string) => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            })
+        }
+    }
+
     // const session = await getSession()
     // console.log(session)
     // console.log(session.logged_in)
@@ -21,8 +32,20 @@ const NavBar = ({ styling }: NavBarProps) => {
     return (
         <nav className={`${styles.navbar} ${styling || ''}`}>
             <Link className={styles.navLink} href='/'>Home</Link>
-            <Link className={styles.navLink} href='/about'>About Me</Link>
-            <Link className={styles.navLink} href='/projects'>My projects</Link>
+            <button 
+                className={styles.navLink} 
+                onClick={() => scrollToSection('projects')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
+                My projects
+            </button>
+            <button 
+                className={styles.navLink} 
+                onClick={() => scrollToSection('skills')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
+                My skills
+            </button>
             <Link className={styles.navLink} href='/contact'>Contact</Link>
             
             {/* Animation Toggle Slider */}

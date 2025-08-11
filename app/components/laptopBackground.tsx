@@ -115,7 +115,7 @@ const LaptopBackground = () => {
     }
     const cardsRef = useRef<CardDef[]>([
         { id: 'c1', title: 'Portfolio Website', desc: 'The project you are looking at right now!', color: '#4fc3f7', link: '/projects', github: 'https://github.com/IlyaasAitSimmou/Ilyaas-website', gradient: 'linear-gradient(135deg, #ffd43b, #f39c12)' },
-        { id: 'c2', title: 'Rocket Simulation', desc: '3D simulator to replay model rocket flights based on sensor data.', color: '#ff6b6b', link: '/projects', image: '/logos/rocketsim2.png' },
+        { id: 'c2', title: 'Rocket Simulation', desc: '3D simulator to replay model rocket flights based on sensor data.', color: '#ff6b6b', link: '/projects', image: '/logos/rocketsim2.png', github: 'https://github.com/IlyaasAitSimmou/rocket_flight_sim' },
         { id: 'c3', title: 'SpendWise', desc: 'A web application that tracks and evaluates user spending habits by scanning receipts and provides alternatives based on location.', link: '/projects', image: '/logos/spendwise.png', github: 'https://github.com/aarnavshah12/SpendWise', devpost: 'https://devpost.com/software/spendwise-4hqxyk', demo: 'https://spend-wise-liart.vercel.app/', imageSize: 'contain', color: 'white' },
         { id: 'c4', title: 'SIMAD Foundation', desc: 'The official website of SIMAD, an organization focused on providing students with competition-based learning experiences.', color: '#ffd43b', link: '/projects', github: 'https://github.com/IlyaasAitSimmou/simad_website', demo: 'https://simadfoundation.com/', image: '/logos/simad.png' },
         { id: 'c5', title: 'Flappy Fitness', desc: 'An exercise-controlled variant of Flappy Bird built with Pygame and OpenCV', color: '#ff9f43', link: '/projects', image: '/logos/flappyfitness.png', github: 'https://github.com/aarnavshah12/Flappy-Fitness', devpost: 'https://devpost.com/software/flappy-fitness-jzghs7'},
@@ -327,7 +327,7 @@ const LaptopBackground = () => {
         ctx.fillText('My Projects', canvas.width / 2, scale(60)) // Auto-scale position
         ctx.fillStyle = '#ccc'
         ctx.font = `400 ${scale(20)}px Arial` // Auto-scale font
-        ctx.fillText('Click on a project to view details', canvas.width / 2, scale(95)) // Auto-scale position
+        ctx.fillText('Click the links on the right to check projects out!', canvas.width / 2, scale(95)) // Auto-scale position
 
         // Cards area
         const paddingX = scale(60) // Auto-scale padding
@@ -1054,13 +1054,19 @@ const LaptopBackground = () => {
             />
             
             {/* Fullscreen Button */}
-            <button 
+            <div className={styles.fullscreenButtonContainer}>
+                <button 
                 className={styles.fullscreenButton}
                 onClick={() => setIsFullscreen(true)}
                 title="Open projects in fullscreen"
             >
                 <div className={styles.fullscreenIcon}>⛶</div>
             </button>
+            <p className={styles.fullscreenCaption}>
+                Click to Enter Full Screen
+            </p>
+            </div>
+            
             
             {isFullscreen && (
                 <div className={styles.fullscreenOverlay} onClick={() => setIsFullscreen(false)}>
@@ -1069,7 +1075,7 @@ const LaptopBackground = () => {
                         <div className={styles.webpageContent}>
                             <header className={styles.webpageHeader}>
                                 <h1>My Projects</h1>
-                                <p>Click a project to view details</p>
+                                <p>Click the links to check projects out</p>
                             </header>
                             <div className={styles.webpageProjects}>
                                 {cardsRef.current.map(card => (

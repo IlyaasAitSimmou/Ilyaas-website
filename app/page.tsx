@@ -103,6 +103,7 @@ export default function Home() {
   }, [animationsEnabled]);
   return (
     <main className={styles.homepage}>
+      {/* Animated title - only show when animations are enabled */}
       {animationsEnabled && typingTextVisible && (
         <span className={
           typingTextFinal 
@@ -114,6 +115,13 @@ export default function Home() {
           Hey! I&apos;m Ilyaas
         </span>
       )}
+      
+      {/* Static title - only show when animations are disabled */}
+      {!animationsEnabled && (
+        <span className={styles.typingText2}>
+          Hey! I&apos;m Ilyaas
+        </span>
+      )}
       {/* Space/Rocket Section */}
       <div style={{ position: 'relative', height: '300vh', width: '100%' /* was 100vw */ }}>
         <StarryBackground />
@@ -122,12 +130,23 @@ export default function Home() {
       </div>
       
       {/* Laptop Section */}
-      <div style={{ position: 'relative', height: '150vh', width: '100%' /* was 100vw */ }}>
-        <LaptopBackground />
+      <div id="projects" style={{ position: 'relative', width: '100%' }}>
+        {/* Projects Header */}
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Projects</h2>
+          <p className={styles.sectionSubtitle}>Check out some cool stuff I&apos;ve created or collaborated on!</p>
+        </div>
+        
+        {/* Laptop Background */}
+        <div style={{ position: 'relative', height: '150vh', width: '100%' }}>
+          <LaptopBackground />
+        </div>
       </div>
 
       {/* Skills Section */}
-      <SkillsSection />
+      <div id="skills">
+        <SkillsSection />
+      </div>
     </main>
   );
 }
