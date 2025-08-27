@@ -139,7 +139,7 @@ const StarryBackground = () => {
                 style={{ opacity: 1 - backgroundTransition }}
             >
                 <h1 className={styles.title}>
-                    I'm passionate about{' '}
+                    I&apos;m passionate about{' '}
                     <span
                         className={`${styles.cyclingWord} ${!isWordVisible ? styles.fadeOut : ''}`}
                     >
