@@ -165,3 +165,47 @@
 .cyclingWord.fadeOut {
     opacity: 0;
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .starryBackground {
+        width: 100vw; /* Ensure full width on mobile */
+        height: 300vh;
+        left: 0;
+        right: 0;
+        overflow: hidden; /* Prevent any overflow */
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .starryBackground {
+        width: 100vw; /* Ensure full width on phones */
+        height: 300vh;
+        left: 0;
+        right: 0;
+        overflow: hidden; /* Prevent any horizontal overflow */
+        max-width: 100vw;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .title {
+        font-size: 2rem; /* Smaller title on phones */
+        max-width: 90vw;
+        text-align: center;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+        word-break: break-word;
+    }
+    
+    .titleContainer {
+        width: 100%;
+        max-width: 100vw;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+}

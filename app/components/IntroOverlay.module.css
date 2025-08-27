@@ -1,4 +1,3 @@
-
 .overlay {
     position: fixed;
     top: 0;
@@ -16,6 +15,8 @@
     pointer-events: all;
     /* Ensure overlay is above everything */
     isolation: isolate;
+    /* Prevent overscroll on mobile */
+    overscroll-behavior: none;
 }
 
 .overlay.fadeOut {
@@ -50,5 +51,90 @@
     }
     50% {
         border-color: #fff7cb;
+    }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .overlay {
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    
+    .typingContainer {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .typingText {
+        font-size: 3.5rem;
+        max-width: 90vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 480px) {
+    .overlay {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 0 15px;
+    }
+    
+    .typingContainer {
+        padding: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .typingText {
+        font-size: 2.2rem;
+        max-width: 95vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 360px) {
+    .overlay {
+        padding: 0 10px;
+    }
+    
+    .typingContainer {
+        padding: 0;
+        width: 100%;
+    }
+    
+    .typingText {
+        font-size: 1.8rem;
+        max-width: 98vw;
+    }
+}
+
+@media (max-width: 320px) {
+    .overlay {
+        padding: 0 8px;
+    }
+    
+    .typingContainer {
+        padding: 0;
+        width: 100%;
+    }
+    
+    .typingText {
+        font-size: 1.6rem;
+        max-width: 99vw;
     }
 }

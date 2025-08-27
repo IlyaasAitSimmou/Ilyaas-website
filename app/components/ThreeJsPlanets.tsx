@@ -29,6 +29,15 @@ const ThreeJsPlanets = () => {
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
         renderer.setSize(window.innerWidth, window.innerHeight * 3) // Use proper height for 3-section layout
         renderer.setClearColor(0x000000, 0) // Transparent background
+        
+        // Mobile performance optimization
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) // Limit pixel ratio on mobile
+        } else {
+            renderer.setPixelRatio(window.devicePixelRatio)
+        }
+        
         rendererRef.current = renderer
         mountRef.current.appendChild(renderer.domElement)
 
@@ -265,14 +274,30 @@ const ThreeJsPlanets = () => {
             return planetGroup
         }
 
-        // Create multiple planets
-        const planets = [
-            createPlanet(1.5, 0xff6b6b, [2, 2, -4], [2, Math.PI/2.3], 9, 0.25, 1), // Gas giant - red og: 2.8
-            createPlanet(0.3, 0xb0b0b0, [0.5 , 3.5, -2], [0, Math.PI/2.7], 9, 0.2, 2), // Oceanic Moon - Blue (fixed planetType)
+        // Create multiple planets with mobile responsiveness
+        const isMobilePhone = window.innerWidth <= 480
+        
+        // Mobile: smaller planets, more spread out positioning
+        const mobileScale = isMobilePhone ? 0.5 : 1
+        const mobileSpread = isMobilePhone ? 1.8 : 1
+        
+        const planets = isMobilePhone ? [
+            // Mobile planet layout - smaller sizes, more spread out
+            createPlanet(0.8 * mobileScale, 0xff6b6b, [3.5 * mobileSpread, 1.5 * mobileSpread, -4], [2, Math.PI/2.3], 9, 0.25, 1), // Gas giant - red
+            createPlanet(0.2 * mobileScale, 0xb0b0b0, [1 * mobileSpread, 6 * mobileSpread, -2], [0, Math.PI/2.7], 9, 0.2, 2), // Moon
+            createPlanet(0.4 * mobileScale, 0x4ecdc4, [-6 * mobileSpread, -0.5 * mobileSpread, -3], [2, Math.PI/1.8], 9, 0.1, 3), // Oceanic
+            createPlanet(0.15 * mobileScale, 0xe0e0e0, [-5 * mobileSpread, 8 * mobileSpread, -4], [0, Math.PI/2.7], 9, 0.2, 0), // Small moon
+            createPlanet(0.2 * mobileScale, 0xffe8a8, [3 * mobileSpread, -5 * mobileSpread, -1], [2, Math.PI/1.8], 6, 0.2, 1), // Gas giant - yellow
+            createPlanet(0.35 * mobileScale, 0x5ea3ff, [-7 * mobileSpread, 10 * mobileSpread, -4], [0, Math.PI/2.7], 9, 0.2, 3), // Terrain
+            createPlanet(0.25 * mobileScale, 0xffaaa5, [6 * mobileSpread, -3 * mobileSpread, -2], [1, Math.PI/2.7], 9, 0.2, 1) // Gas giant - pink
+        ] : [
+            // Desktop planet layout - original
+            createPlanet(1.5, 0xff6b6b, [2, 2, -4], [2, Math.PI/2.3], 9, 0.25, 1), // Gas giant - red
+            createPlanet(0.3, 0xb0b0b0, [0.5, 3.5, -2], [0, Math.PI/2.7], 9, 0.2, 2), // Oceanic Moon
             createPlanet(0.7, 0x4ecdc4, [-4, -1, -3], [2, Math.PI/1.8], 9, 0.1, 3), // Oceanic - teal
-            createPlanet(0.2, 0xe0e0e0, [-4, 5.5, -4], [0, Math.PI/2.7], 9, 0.2, 0), // Terrain Moon - Blue (fixed planetType)
+            createPlanet(0.2, 0xe0e0e0, [-4, 5.5, -4], [0, Math.PI/2.7], 9, 0.2, 0), // Terrain Moon
             createPlanet(0.3, 0xffe8a8, [2, -3, -1], [2, Math.PI/1.8], 6, 0.2, 1), // Gas giant - yellow
-            createPlanet(0.6, 0x5ea3ff, [-5, 6, -4], [0, Math.PI/2.7], 9, 0.2, 3), // Terrain - Blue (fixed planetType)
+            createPlanet(0.6, 0x5ea3ff, [-5, 6, -4], [0, Math.PI/2.7], 9, 0.2, 3), // Terrain - Blue
             createPlanet(0.4, 0xffaaa5, [4, -2, -2], [1, Math.PI/2.7], 9, 0.2, 1) // Gas giant - pink
         ]
 
@@ -331,6 +356,14 @@ const ThreeJsPlanets = () => {
             camera.aspect = window.innerWidth / (window.innerHeight * 3) // Correct aspect ratio for 3-section layout
             camera.updateProjectionMatrix()
             renderer.setSize(window.innerWidth, window.innerHeight * 3) // Maintain 3-section height
+            
+            // Update mobile optimization on resize
+            const isMobile = window.innerWidth <= 768
+            if (isMobile) {
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+            } else {
+                renderer.setPixelRatio(window.devicePixelRatio)
+            }
         }
         window.addEventListener('resize', handleResize)
 

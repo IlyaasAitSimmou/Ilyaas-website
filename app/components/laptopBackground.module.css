@@ -397,7 +397,194 @@
     height: 120px;
 }
 
-.fullscreenContent .projectColor {
-    width: 20px;
-    height: 20px;
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .laptopContainer {
+        /* Scale down the entire laptop experience for tablets */
+        /* transform: scale(0.8); */
+    }
+    
+    .fullscreenButtonContainer {
+        top: 8%;
+        right: 3%;
+    }
+    
+    .fullscreenButton {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .fullscreenLabel {
+        font-size: 0.9rem;
+    }
+    
+    /* Adjust 3D laptop webpage content for tablets */
+    .webpageHeader {
+        padding: 20px;
+    }
+    
+    .webpageHeader h1 {
+        font-size: 20px;
+    }
+    
+    .webpageHeader p {
+        font-size: 12px;
+    }
+    
+    .webpageProjects {
+        padding: 20px;
+        gap: 18px;
+    }
+    
+    .projectCard {
+        padding: 15px 18px;
+        gap: 15px;
+    }
+    
+    .projectImageSection {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .projectInfo h3 {
+        font-size: 14px;
+    }
+    
+    .projectInfo p {
+        font-size: 11px;
+    }
+    
+    .iconButton {
+        min-width: 32px;
+        min-height: 32px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .laptopContainer {
+        /* Scale down further for mobile phones */
+        transform: scale(0.6);
+        height: 80vh; /* Reduce height on mobile */
+    }
+    
+    .laptopSection {
+        height: 80vh; /* Match container height */
+    }
+    
+    .fullscreenButtonContainer {
+        top: 5%;
+        right: 2%;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .fullscreenButton {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .fullscreenLabel {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    /* Further adjust 3D laptop webpage content for mobile */
+    .webpageHeader {
+        padding: 15px;
+    }
+    
+    .webpageHeader h1 {
+        font-size: 18px;
+    }
+    
+    .webpageHeader p {
+        font-size: 10px;
+    }
+    
+    .webpageProjects {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .projectCard {
+        padding: 12px 15px;
+        gap: 12px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .projectImageSection {
+        width: 60px;
+        height: 60px;
+        align-self: center;
+    }
+    
+    .projectInfo h3 {
+        font-size: 12px;
+    }
+    
+    .projectInfo p {
+        font-size: 10px;
+    }
+    
+    .iconButton {
+        min-width: 28px;
+        min-height: 28px;
+        padding: 5px;
+    }
+    
+    .playTriangle {
+        border-left: 6px solid #4fc3f7;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+    }
+}
+
+@media (max-width: 360px) {
+    .laptopContainer {
+        /* Extra small mobile devices */
+        transform: scale(0.5);
+        height: 70vh;
+    }
+    
+    .laptopSection {
+        height: 70vh;
+    }
+    
+    .fullscreenButton {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .fullscreenLabel {
+        font-size: 0.7rem;
+    }
+    
+    .projectCard {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+    
+    .projectImageSection {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .projectInfo h3 {
+        font-size: 11px;
+    }
+    
+    .projectInfo p {
+        font-size: 9px;
+    }
+    
+    .iconButton {
+        min-width: 24px;
+        min-height: 24px;
+        padding: 4px;
+    }
 }

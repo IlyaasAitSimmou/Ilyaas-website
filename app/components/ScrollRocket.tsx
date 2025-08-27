@@ -39,6 +39,15 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
         renderer.setSize(window.innerWidth, window.innerHeight)
         renderer.setClearColor(0x000000, 0)
         renderer.outputColorSpace = THREE.SRGBColorSpace
+        
+        // Mobile performance optimization
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) // Limit pixel ratio on mobile
+        } else {
+            renderer.setPixelRatio(window.devicePixelRatio)
+        }
+        
         rendererRef.current = renderer
         mountRef.current.appendChild(renderer.domElement)
 
@@ -405,7 +414,18 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
                 } else {
                     // Phase 2: Move up and to the right
                     const phase2 = (rocketProgress - 0.5) * 2
-                    x = -(worldWidth) + phase2 * ((worldWidth-4) * 2) // -8 to 8
+                    
+                    // Check if mobile device
+                    const isMobileDevice = window.innerWidth <= 480
+                    
+                    if (isMobileDevice) {
+                        // Mobile: end rocket at right edge
+                        x = -(worldWidth) + phase2 * (worldWidth * 2.2) // -8 to right edge (slightly beyond worldWidth)
+                    } else {
+                        // Desktop: original path
+                        x = -(worldWidth) + phase2 * ((worldWidth-4) * 2) // -8 to 8
+                    }
+                    
                     y = -3 + (-2*phase2 +(phase2*1.5)**2) // -3 to 5
                     
                     // Fade out the glow effect during phase 2
@@ -440,9 +460,18 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
 
                     if (phase2 == 1) {
                         // Convert world coordinates to screen coordinates
-
-                        const screenX = (x * 0.5 + 0.5) * renderer.domElement.clientWidth;
+                        const isMobileDevice = window.innerWidth <= 480
+                        
+                        let screenX = (x * 0.5 + 0.5) * renderer.domElement.clientWidth;
                         const screenY = -(y * 0.5 - 0.5) * renderer.domElement.clientHeight;
+
+                        // Ensure rocket stays within screen bounds on mobile
+                        if (isMobileDevice) {
+                            // Clamp screenX to be within the viewport width with some margin
+                            const margin = 50 // 50px margin from edge
+                            screenX = Math.min(screenX, window.innerWidth - margin)
+                            screenX = Math.max(screenX, margin)
+                        }
 
                         // Capture final position when animation completes
                         setFinalPosition({ x: screenX, y: screenY, rotation: rotationZ!, scale: scale! })
@@ -509,9 +538,11 @@ const ScrollRocket = ({ containerRef }: { containerRef?: React.RefObject<HTMLDiv
         left: 0, 
         zIndex: 5000, 
         pointerEvents: 'none',
-        width: '100%', // was 100vw causing horizontal scroll when scrollbar present
+        width: typeof window !== 'undefined' && window.innerWidth <= 480 ? '100vw' : '100%', // Full viewport width on mobile
+        maxWidth: '100vw', // Prevent horizontal overflow
         minHeight: '100vh',
-        overflow: 'visible'
+        overflow: 'hidden', // Prevent overflow on mobile
+        boxSizing: 'border-box'
     }} />
 }
 

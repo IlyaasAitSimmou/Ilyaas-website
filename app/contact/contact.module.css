@@ -3,7 +3,7 @@
     background: linear-gradient(135deg, #0f001c 0%, #1a1a2e 30%, #16213e 70%, #0f1419 100%);
     position: relative;
     overflow-x: hidden;
-    overscroll-behavior-y: contain;
+    overscroll-behavior: none;
     overflow-y: hidden;
 }
 
@@ -148,12 +148,21 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .contactPage {
+        width: 100vw; /* Ensure full width */
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    
     .contentWrapper {
         padding-top: 100px;
         padding-bottom: 60px;
         gap: 40px;
         padding-left: 16px;
         padding-right: 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .pageTitle {
@@ -169,6 +178,8 @@
     .socialSection {
         padding: 32px 24px;
         border-radius: 20px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .socialLinks {
@@ -182,9 +193,22 @@
 }
 
 @media (max-width: 480px) {
+    .contactPage {
+        width: 100vw; /* Ensure full width on phones */
+        min-height: 100vh;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    
     .contentWrapper {
         padding-top: 80px;
         gap: 32px;
+        padding-left: 12px;
+        padding-right: 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .pageTitle {
@@ -199,6 +223,8 @@
     .socialSection {
         padding: 24px 20px;
         border-radius: 16px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .socialLinks {

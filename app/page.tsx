@@ -12,6 +12,7 @@ import ThreeJsPlanets from "./components/ThreeJsPlanets";
 import ScrollRocket from "./components/ScrollRocket";
 import LaptopBackground from "./components/laptopBackground";
 import SkillsSection from "./components/SkillsSection";
+import MobileProjectsSection from "./components/MobileProjectsSection";
 import { useAnimationSettings, ANIMATION_TIMINGS, getTotalAnimationDuration } from "./components/AnimationSettings";
 // import styles from "./homepage.module.css";
 
@@ -129,7 +130,7 @@ export default function Home() {
         {/* <ScrollRocket /> */}
       </div>
       
-      {/* Laptop Section */}
+      {/* Laptop Section - Hidden on phones */}
       <div id="projects" style={{ position: 'relative', width: '100%' }}>
         {/* Projects Header */}
         <div className={styles.sectionHeader}>
@@ -137,9 +138,14 @@ export default function Home() {
           <p className={styles.sectionSubtitle}>Check out some cool stuff I&apos;ve created or collaborated on!</p>
         </div>
         
-        {/* Laptop Background */}
-        <div style={{ position: 'relative', height: '150vh', width: '100%' }}>
+        {/* Laptop Background - Hidden on phones */}
+        <div style={{ position: 'relative', height: '150vh', width: '100%' }} className={styles.laptopOnly}>
           <LaptopBackground />
+        </div>
+        
+        {/* Mobile Projects Section - Only shown on phones */}
+        <div className={styles.mobileOnly}>
+          <MobileProjectsSection />
         </div>
       </div>
 

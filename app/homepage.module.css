@@ -20,6 +20,8 @@
     align-items: stretch;
     width: 100%; /* ensure no unintended 100vw usage here */
     overflow-x: clip; /* just in case child uses large translate */
+    min-height: 100vh; /* Ensure minimum full height */
+    overscroll-behavior: none;
 }
 
 /* Animated gradient for typing text */
@@ -128,10 +130,27 @@
     z-index: 1;
 }
 
+/* Show/hide sections based on device */
+.laptopOnly {
+    display: block;
+}
+
+.mobileOnly {
+    display: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .homepage {
+        width: 100vw; /* Ensure full width on mobile */
+        overflow-x: hidden;
+        overscroll-behavior: none;
+    }
+    
     .sectionHeader {
         padding: 60px 20px 30px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .sectionTitle {
@@ -141,11 +160,64 @@
     .sectionSubtitle {
         font-size: 1.1rem;
     }
+    
+    /* Hide laptop section and show mobile projects on tablets and phones */
+    .laptopOnly {
+        display: none;
+    }
+    
+    .mobileOnly {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Mobile adjustments for intro animation */
+    .typingText {
+        font-size: 3.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+    }
+    
+    .typingTextTransitioning {
+        font-size: 3rem;
+        top: 140px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+    }
+    
+    .typingText2 {
+        font-size: 3rem;
+        top: 140px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+    }
 }
 
 @media (max-width: 480px) {
+    .homepage {
+        width: 100vw; /* Ensure full width on phones */
+        overflow-x: hidden;
+        min-height: 100vh;
+        overscroll-behavior: none;
+    }
+    
     .sectionHeader {
         padding: 40px 15px 20px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .sectionTitle {
@@ -154,5 +226,154 @@
     
     .sectionSubtitle {
         font-size: 1rem;
+    }
+    
+    /* Smaller mobile adjustments for intro animation */
+    .typingText {
+        font-size: 2.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 95vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+    
+    .typingTextTransitioning {
+        font-size: 1.8rem;
+        top: 110px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 95vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+    
+    .typingText2 {
+        font-size: 1.8rem;
+        top: 110px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 95vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 360px) {
+    .homepage {
+        width: 100vw;
+        overflow-x: hidden;
+        min-height: 100vh;
+        overscroll-behavior: none;
+    }
+    
+    .sectionHeader {
+        padding: 30px 10px 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Extra small mobile devices */
+    .typingText {
+        font-size: 1.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 98vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+    
+    .typingTextTransitioning {
+        font-size: 1.5rem;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 98vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+    
+    .typingText2 {
+        font-size: 1.5rem;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 98vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.2;
+    }
+    
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+    
+    .sectionSubtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra extra small devices (320px and below) */
+@media (max-width: 320px) {
+    .homepage {
+        width: 100vw;
+        overflow-x: hidden;
+        min-height: 100vh;
+        overscroll-behavior: none;
+    }
+    
+    /* Ultra compact mobile adjustments for intro animation */
+    .typingText {
+        font-size: 1.6rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 99vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.1;
+    }
+    
+    .typingTextTransitioning {
+        font-size: 1.3rem;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 99vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.1;
+    }
+    
+    .typingText2 {
+        font-size: 1.3rem;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 99vw;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        line-height: 1.1;
+    }
+    
+    .sectionTitle {
+        font-size: 1.3rem;
+    }
+    
+    .sectionSubtitle {
+        font-size: 0.85rem;
     }
 }
