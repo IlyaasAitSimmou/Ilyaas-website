@@ -48,7 +48,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     skills: [
       { name: "KiCad", image: "/logos/kicad.png" },
       { name: "CubeIDE/HAL", image: "/logos/stm32.png" },
-      { name: "Teensy", image: "/logos/sparkfun.png" },
+      { name: "Teensy", image: "/logos/pjrc.png" },
       { name: "Arduino", image: "/logos/arduino.png" },
     ],
   },

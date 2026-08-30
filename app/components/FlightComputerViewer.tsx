@@ -389,8 +389,20 @@ const FlightComputerViewer = () => {
 
     let disposed = false;
     let raf = 0;
-    let visible = true;
     let loaded = false;
+
+    /*
+     * Two independent reasons to pause rendering, tracked separately on
+     * purpose. Collapsing them into one flag is a trap: `hidden && wasVisible`
+     * latches the flag off, so returning to the tab can never switch rendering
+     * back on and the board sits frozen until something else revives it.
+     */
+    let inView = true;
+    let pageVisible = true;
+
+    const clock = new THREE.Clock();
+    /** Render-time only, so the idle drift ignores time spent paused. */
+    let driftTime = 0;
 
     const recomputeDistance = () => {
       if (!loaded) return;
@@ -542,18 +554,30 @@ const FlightComputerViewer = () => {
       if (e.cancelable) e.preventDefault();
     };
 
-    const endPointer = (e: PointerEvent) => {
-      if (e.pointerId !== pointerId) return;
+    /**
+     * Drops the current gesture. Safe to call at any time — needed because a
+     * pointerup can happen where we never hear about it (backgrounded tab,
+     * window switch), and a latched `pointerId` blocks every later drag.
+     */
+    const resetDrag = () => {
+      if (pointerId !== null && el.hasPointerCapture(pointerId)) {
+        el.releasePointerCapture(pointerId);
+      }
       pointerId = null;
       axisLocked = "none";
       setIsDragging(false);
-      if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+    };
+
+    const endPointer = (e: PointerEvent) => {
+      if (e.pointerId !== pointerId) return;
+      resetDrag();
     };
 
     el.addEventListener("pointerdown", onPointerDown);
     el.addEventListener("pointermove", onPointerMove, { passive: false });
     el.addEventListener("pointerup", endPointer);
     el.addEventListener("pointercancel", endPointer);
+    window.addEventListener("blur", resetDrag);
 
     /* ----------------------------------------------------------- observers */
     const ro = new ResizeObserver(resize);
@@ -561,14 +585,21 @@ const FlightComputerViewer = () => {
 
     const io = new IntersectionObserver(
       (entries) => {
-        visible = entries[0]?.isIntersecting ?? true;
+        inView = entries[0]?.isIntersecting ?? true;
       },
       { rootMargin: "120px" }
     );
     io.observe(mount);
 
     const onVisibility = () => {
-      visible = !document.hidden && visible;
+      pageVisible = !document.hidden;
+      if (document.hidden) {
+        resetDrag();
+      } else {
+        // requestAnimationFrame was parked while backgrounded, so discard the
+        // accumulated delta rather than feeding the whole absence into the loop.
+        clock.getDelta();
+      }
     };
     document.addEventListener("visibilitychange", onVisibility);
 
@@ -636,13 +667,15 @@ const FlightComputerViewer = () => {
     const projected = new THREE.Vector3();
     const boardUp = new THREE.Vector3();
     const camDir = new THREE.Vector3();
-    const clock = new THREE.Clock();
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      if (!visible || !loaded) return;
+      if (!inView || !pageVisible || !loaded) return;
 
-      const t = clock.getElapsedTime();
+      // Clamped: the first frame after any pause carries a large delta, and
+      // feeding that straight in would make the board lurch.
+      driftTime += Math.min(clock.getDelta(), 0.05);
+      const t = driftTime;
 
       // Idle drift, suspended once the user takes over.
       if (!reduceMotion && !state.userEngaged) {
@@ -731,6 +764,7 @@ const FlightComputerViewer = () => {
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("blur", resetDrag);
       el.removeEventListener("pointerdown", onPointerDown);
       el.removeEventListener("pointermove", onPointerMove);
       el.removeEventListener("pointerup", endPointer);
