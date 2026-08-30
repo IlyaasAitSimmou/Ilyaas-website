@@ -56,7 +56,7 @@ const NavBar = () => {
               priority
             />
           </span>
-          <span className={styles.brandName}>{PERSON.name}</span>
+          <span className={styles.brandName}>{PERSON.name} - {PERSON.uni} </span>
         </Link>
 
         <ul className={styles.links}>

@@ -52,7 +52,7 @@ export const BOARD_ANNOTATIONS: BoardAnnotation[] = [
     id: "imu",
     designator: "U2",
     label: "6-axis Inertial Measurement Unit",
-    detail: " LSM6DSV32 · I2C",
+    detail: " LSM6DSV32XTR · I2C",
     anchor: [0.0156, -0.0348, -0.3755],
   },
   {

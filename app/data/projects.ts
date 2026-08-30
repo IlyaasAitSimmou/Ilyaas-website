@@ -277,21 +277,21 @@ export const PROJECTS: Project[] = [
     year: "2024",
     gallery: [],
   },
-  {
-    id: "portfolio",
-    title: "This Website",
-    blurb: "The site you're on — including the real-time 3D board viewer.",
-    description:
-      "Built with Next.js and TypeScript, with the flight computer above rendered live from its CAD export.",
-    detail: [
-      "The interesting part of this site is the board at the top. It's the genuine CAD export of the DAQ V4.1, which arrived as an 11.4 MB file split into 13,579 separate draw calls — completely unusable in a browser.",
-      "Merging the geometry by material and compressing it with meshopt brought that down to 1 MB and 27 draw calls, which is what makes it render smoothly while you drag it around.",
-    ],
-    tags: ["Next.js", "TypeScript", "Three.js"],
-    github: "https://github.com/IlyaasAitSimmou/Ilyaas-website",
-    year: "2025",
-    gallery: [],
-  },
+  // {
+  //   id: "portfolio",
+  //   title: "This Website",
+  //   blurb: "The site you're on — including the real-time 3D board viewer.",
+  //   description:
+  //     "Built with Next.js and TypeScript, with the flight computer above rendered live from its CAD export.",
+  //   detail: [
+  //     "The interesting part of this site is the board at the top. It's the genuine CAD export of the DAQ V4.1, which arrived as an 11.4 MB file split into 13,579 separate draw calls — completely unusable in a browser.",
+  //     "Merging the geometry by material and compressing it with meshopt brought that down to 1 MB and 27 draw calls, which is what makes it render smoothly while you drag it around.",
+  //   ],
+  //   tags: ["Next.js", "TypeScript", "Three.js"],
+  //   github: "https://github.com/IlyaasAitSimmou/Ilyaas-website",
+  //   year: "2025",
+  //   gallery: [],
+  // },
 ];
 
 export const FLAGSHIP_PROJECT = PROJECTS.find((p) => p.flagship)!;

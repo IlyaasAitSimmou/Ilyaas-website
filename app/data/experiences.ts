@@ -56,11 +56,10 @@ export const EXPERIENCES: Experience[] = [
       "I developed KRAKENBANE I, a 4-layer SMT STM32F407 data-acquisition flight computer, and built GUEPARD I, a 4-layer Teensy 4.0 pitot tube board deriving airspeed from dynamic pressure. Both are included in my projects section",
     ],
     highlights: [
-      "A specific, measurable thing you achieved",
-      "Another one — numbers land harder than adjectives",
-      "A tool, system or process you introduced",
+      "Retrieved data from KRAKENBANE I yielded altitude calculations agreeing within 0.2% of Blue Raven and RRC3+ COTS altimeters. Velocity calculations agreed within 3% of the Blue Raven's value.",
+      "Recovered data from GUEPARD I yielded velocity values of Mach 1.14–1.17 against the Blue Raven's 1.16",
     ],
-    tags: ["Skill", "Skill", "Skill"],
+    tags: ["PCB Design", "STM32", "SMT", "Firmware", "Avionics", "C", "kiCad", "Teensy 4.0", "C++"],
     gallery: [],
   },
   {
@@ -73,8 +72,8 @@ export const EXPERIENCES: Experience[] = [
     detail: [
       "",
     ],
-    highlights: ["Something you shipped", "Something you learned the hard way"],
-    tags: ["Skill", "Skill"],
+    highlights: [""],
+    tags: ["Full-Stack Development for Mobile Apps"],
     gallery: [],
   },
 ];

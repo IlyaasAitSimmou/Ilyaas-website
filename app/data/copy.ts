@@ -23,9 +23,10 @@
  * ========================================================================== */
 
 export const PERSON = {
-  name: "Ilyaas Ait Simmou - Computer Engineering @ University of Waterloo",
+  name: "Ilyaas Ait Simmou",
   /** Shown under your name in the footer. */
-  role: "Computer Engineer @University of Waterloo | Embedded Systems + Software dev",
+  uni: "Incoming Computer Engineering @ University of Waterloo",
+  role: "Incoming Computer Engineering @University of Waterloo | Embedded Systems + Software Dev",
   /**
    * Crest shown at the top-left of the nav. Any square image in `public/`
    * works; its display size is set by `.brandMark` in NavBar.module.css.
@@ -78,7 +79,7 @@ export const HERO = {
    * `**text**` renders as brighter, emphasised text.
    */
   subhead:
-    "Computer Engineering at the University of Waterloo. Embedded firmware, PCB design, Signal Processing, Data analysis, full-stack app/web development. Built **KRAKENBANE I** — a data-acquisition (DAQ) flight computer I took from schematic to firmware. Flown on a supersonic rocket (Mach 1.6, 12,100+ ft). Altitude agreed within 0.2% of the Blue Raven and velocity within 3%.",
+    "Embedded firmware, PCB design, Signal Processing, Data analysis, full-stack app/web development. Built **KRAKENBANE I** — a data-acquisition (DAQ) flight computer I took from schematic to firmware. Flown on a supersonic rocket (Mach 1.16, 12,100+ ft). Altitude agreed within 0.2% of the Blue Raven and velocity within 3%.",
   primaryCta: { label: "View selected work", href: "#work" },
   secondaryCta: { label: "Get in touch", href: "/contact" },
 };
