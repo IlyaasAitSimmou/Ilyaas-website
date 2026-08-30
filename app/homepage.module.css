@@ -1,379 +1,336 @@
-/* .home_body {
-    width: 100vw;
-    height: 100vh;
-    background: rgb(32,32,32);
-    background: radial-gradient(circle, rgba(32,32,32,1) 0%, rgba(0,0,0,1) 100%, rgba(9,9,121,1) 7459%);
-    display: flex;
+/* ==========================================================================
+   Homepage layout
+   Hero is a two-column split: copy on the left, the 3D board on the right.
+   Projects start immediately after it.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + 40px) 0 56px;
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: 56px;
+  align-items: center;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------------------------------------------------------------- hero copy */
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 22px;
+  padding: 5px 12px 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 3px var(--signal-dim);
+  animation: pulse 2.6s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.headline {
+  margin-bottom: 20px;
+  font-size: clamp(30px, 4.2vw, 54px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  max-width: 15ch;
+}
+
+.subhead {
+  margin-bottom: 30px;
+  max-width: 46ch;
+  font-size: clamp(14.5px, 1.15vw, 16px);
+  line-height: 1.62;
+  color: var(--text-muted);
+}
+
+.strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------- CTAs */
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-bottom: 38px;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.ctaPrimary {
+  color: #05070a;
+  background: #e9edf2;
+  border: 1px solid #e9edf2;
+}
+
+.ctaPrimary:hover {
+  background: #fff;
+  border-color: #fff;
+  transform: translateY(-1px);
+}
+
+.ctaSecondary {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+}
+
+.ctaSecondary:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------- spec strip */
+
+.specRow {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.specItem {
+  flex: 1;
+  min-width: 88px;
+  padding-right: 18px;
+}
+
+.specLabel {
+  margin-bottom: 3px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.specValue {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+/* -------------------------------------------------------------- board panel */
+
+.boardPanel {
+  display: flex;
+  flex-direction: column;
+  /* A definite height, not a min-height: the 3D canvas inside needs a real
+     measurable box to size its drawing buffer against. */
+  height: clamp(360px, 56vh, 540px);
+  background: linear-gradient(180deg, rgba(12, 17, 23, 0.9), rgba(8, 11, 15, 0.6));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.boardHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.boardTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.boardMeta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+.boardViewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.boardFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+}
+
+.boardDivider {
+  width: 1px;
+  height: 9px;
+  background: var(--line-strong);
+}
+
+/* ------------------------------------------------------------------ sections */
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 104px 0;
+  border-top: 1px solid var(--line);
+}
+
+.sectionInner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.sectionIndex {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.sectionLede {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------------ contact */
+
+.contactBlock {
+  max-width: 640px;
+}
+
+.contactTitle {
+  margin-bottom: 16px;
+  font-size: clamp(26px, 3.6vw, 42px);
+}
+
+.contactBlock .ctaRow {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 1080px) {
+  .heroInner {
+    gap: 40px;
+  }
+  .headline {
+    font-size: clamp(28px, 4vw, 44px);
+  }
+}
+
+@media (max-width: 960px) {
+  .hero {
+    min-height: 0;
+    padding-top: calc(var(--nav-h) + 40px);
+    padding-bottom: 40px;
+  }
+  .heroInner {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .heroCopy {
+    order: 1;
+  }
+  .boardPanel {
+    order: 2;
+    height: 380px;
+  }
+  .headline {
+    max-width: 20ch;
+  }
+  .section {
+    padding: 72px 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .ctaRow {
+    margin-bottom: 28px;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    flex: 1;
     justify-content: center;
-    align-items: center;
-}
-
-.header {
-    color: white;
-} */
-
-.homepage {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    width: 100%; /* ensure no unintended 100vw usage here */
-    overflow-x: clip; /* just in case child uses large translate */
-    min-height: 100vh; /* Ensure minimum full height */
-    overscroll-behavior: none;
-}
-
-/* Animated gradient for typing text */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.typingText, .typingText2, .typingTextTransitioning {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    font-family: 'Courier New', monospace;
-    left: 50%;
-}
-
-.typingText {
-    position: fixed;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 6rem;
-    transition: top 0.8s ease, transform 0.8s ease, font-size 0.8s ease;
-    /* gradient text */
-    background: linear-gradient(90deg, #4fc3f7, #8191fa, #4fc3f7);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradientShift 3s ease infinite;
-}
-
-.typingTextTransitioning {
-    position: fixed;
-    top: 200px;
-    transform: translateX(-50%);
-    font-size: 5rem;
-    transition: top 0.8s ease, transform 0.8s ease, font-size 0.8s ease;
-    /* gradient text */
-    background: linear-gradient(90deg, #4fc3f7, #81d4fa, #4fc3f7);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradientShift 3s ease infinite;
-}
-
-.typingText2 {
-    position: absolute;
-    top: 200px;
-    transform: translateX(-50%);
-    font-size: 5rem;
-    /* gradient text */
-    background: linear-gradient(90deg, #4fc3f7, #81d4fa, #4fc3f7);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradientShift 3s ease infinite;
-}
-
-/* Section Header Styles */
-.sectionHeader {
-    text-align: center;
-    padding: 80px 20px 40px;
-    background: linear-gradient(135deg, #0f001c 0%, #1a1a2e 50%, #16213e 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.sectionHeader::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(79,195,247,0.1) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.sectionTitle {
-    font-size: 3.5rem;
-    color: #4fc3f7;
-    margin-bottom: 16px;
-    text-shadow: 0 0 30px rgba(79, 195, 247, 0.5);
-    font-weight: 700;
-    background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 30%, #0288d1 70%, #01579b 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    position: relative;
-    z-index: 1;
-}
-
-.sectionSubtitle {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
-    font-weight: 400;
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
-
-/* Show/hide sections based on device */
-.laptopOnly {
-    display: block;
-}
-
-.mobileOnly {
-    display: none;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .homepage {
-        width: 100vw; /* Ensure full width on mobile */
-        overflow-x: hidden;
-        overscroll-behavior: none;
-    }
-    
-    .sectionHeader {
-        padding: 60px 20px 30px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .sectionTitle {
-        font-size: 2.5rem;
-    }
-    
-    .sectionSubtitle {
-        font-size: 1.1rem;
-    }
-    
-    /* Hide laptop section and show mobile projects on tablets and phones */
-    .laptopOnly {
-        display: none;
-    }
-    
-    .mobileOnly {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Mobile adjustments for intro animation */
-    .typingText {
-        font-size: 3.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 90vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-    }
-    
-    .typingTextTransitioning {
-        font-size: 3rem;
-        top: 140px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 90vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-    }
-    
-    .typingText2 {
-        font-size: 3rem;
-        top: 140px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 90vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-    }
-}
-
-@media (max-width: 480px) {
-    .homepage {
-        width: 100vw; /* Ensure full width on phones */
-        overflow-x: hidden;
-        min-height: 100vh;
-        overscroll-behavior: none;
-    }
-    
-    .sectionHeader {
-        padding: 40px 15px 20px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .sectionTitle {
-        font-size: 2rem;
-    }
-    
-    .sectionSubtitle {
-        font-size: 1rem;
-    }
-    
-    /* Smaller mobile adjustments for intro animation */
-    .typingText {
-        font-size: 2.2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 95vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-    
-    .typingTextTransitioning {
-        font-size: 1.8rem;
-        top: 110px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 95vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-    
-    .typingText2 {
-        font-size: 1.8rem;
-        top: 110px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 95vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-}
-
-@media (max-width: 360px) {
-    .homepage {
-        width: 100vw;
-        overflow-x: hidden;
-        min-height: 100vh;
-        overscroll-behavior: none;
-    }
-    
-    .sectionHeader {
-        padding: 30px 10px 15px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Extra small mobile devices */
-    .typingText {
-        font-size: 1.8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 98vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-    
-    .typingTextTransitioning {
-        font-size: 1.5rem;
-        top: 90px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 98vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-    
-    .typingText2 {
-        font-size: 1.5rem;
-        top: 90px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 98vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.2;
-    }
-    
-    .sectionTitle {
-        font-size: 1.5rem;
-    }
-    
-    .sectionSubtitle {
-        font-size: 0.9rem;
-    }
-}
-
-/* Extra extra small devices (320px and below) */
-@media (max-width: 320px) {
-    .homepage {
-        width: 100vw;
-        overflow-x: hidden;
-        min-height: 100vh;
-        overscroll-behavior: none;
-    }
-    
-    /* Ultra compact mobile adjustments for intro animation */
-    .typingText {
-        font-size: 1.6rem;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 99vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.1;
-    }
-    
-    .typingTextTransitioning {
-        font-size: 1.3rem;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 99vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.1;
-    }
-    
-    .typingText2 {
-        font-size: 1.3rem;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 99vw;
-        text-align: center;
-        white-space: nowrap;
-        overflow: visible;
-        line-height: 1.1;
-    }
-    
-    .sectionTitle {
-        font-size: 1.3rem;
-    }
-    
-    .sectionSubtitle {
-        font-size: 0.85rem;
-    }
+    min-width: 140px;
+  }
+  .specItem {
+    min-width: 50%;
+    padding-bottom: 12px;
+  }
+  .boardPanel {
+    height: 320px;
+  }
 }

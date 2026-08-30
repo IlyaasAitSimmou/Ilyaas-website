@@ -1,0 +1,175 @@
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 104px 0;
+  border-top: 1px solid var(--line);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ------------------------------------------------------------ section head */
+
+.head {
+  max-width: 620px;
+  margin-bottom: 56px;
+}
+
+.index {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.title {
+  margin-bottom: 14px;
+  font-size: clamp(26px, 3.4vw, 38px);
+}
+
+.lede {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------- groups */
+
+.groups {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.group {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) 1fr;
+  gap: 40px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.groupHead {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.groupIndex {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
+}
+
+.groupTitle {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+}
+
+.groupSummary {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+/* ----------------------------------------------------------------- chips */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 38px;
+  padding: 0 14px 0 11px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.chip:hover {
+  background: var(--surface-hover);
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.logoBox {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.logo {
+  width: auto;
+  height: auto;
+  max-width: 22px;
+  max-height: 22px;
+  object-fit: contain;
+  transition: filter var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+/* Colour artwork: muted by default, true colour on hover. */
+.logo[data-tone="color"] {
+  filter: saturate(0.55) brightness(1.12);
+  opacity: 0.9;
+}
+.chip:hover .logo[data-tone="color"] {
+  filter: saturate(1) brightness(1.05);
+  opacity: 1;
+}
+
+/* Solid-black artwork (Three.js, Flask, Next.js): inverted so it reads at all. */
+.logo[data-tone="dark"] {
+  filter: invert(1) brightness(0.86);
+  opacity: 0.82;
+}
+.chip:hover .logo[data-tone="dark"] {
+  filter: invert(1) brightness(1);
+  opacity: 1;
+}
+
+.chipName {
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: -0.008em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+
+.chip:hover .chipName {
+  color: var(--text);
+}
+
+@media (max-width: 860px) {
+  .section {
+    padding: 72px 0;
+  }
+  .head {
+    margin-bottom: 40px;
+  }
+  .group {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 26px 0;
+  }
+}

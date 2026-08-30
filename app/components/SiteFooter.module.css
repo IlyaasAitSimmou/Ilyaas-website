@@ -1,0 +1,99 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--line);
+  background: var(--bg-elevated);
+}
+
+.inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 28px;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: space-between;
+  padding-bottom: 40px;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+.role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+
+.cols {
+  display: flex;
+  gap: 72px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.colTitle {
+  margin-bottom: 3px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.colLink {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.colLink:hover {
+  color: var(--accent-bright);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+@media (max-width: 720px) {
+  .inner {
+    padding-top: 44px;
+  }
+  .top {
+    gap: 34px;
+  }
+  .cols {
+    gap: 48px;
+  }
+}

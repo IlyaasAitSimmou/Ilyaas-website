@@ -1,0 +1,131 @@
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 88px 0 104px;
+  border-top: 1px solid var(--line);
+}
+
+.inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.head {
+  max-width: 620px;
+  margin-bottom: 34px;
+}
+
+.index {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.title {
+  margin-bottom: 14px;
+  font-size: clamp(26px, 3.4vw, 38px);
+}
+
+.lede {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------- tab bar */
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-dim);
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.022);
+}
+
+.tabActive {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.tabCount {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  padding: 1.5px 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.tabActive .tabCount {
+  color: var(--accent);
+  border-color: var(--line-accent);
+}
+
+/* ----------------------------------------------------------------- panels */
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  list-style: none;
+}
+
+.projectGrid > li {
+  display: flex;
+}
+
+.experienceList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 860px) {
+  .section {
+    padding: 64px 0 72px;
+  }
+  .head {
+    margin-bottom: 26px;
+  }
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .projectGrid {
+    grid-template-columns: 1fr;
+  }
+}

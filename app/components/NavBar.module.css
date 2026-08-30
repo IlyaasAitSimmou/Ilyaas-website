@@ -1,376 +1,238 @@
-.navbar {
-    /* Layout */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    backdrop-filter var(--dur) var(--ease);
+}
+
+.scrolled {
+  background: rgba(6, 8, 11, 0.72);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: var(--nav-h);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ------------------------------------------------------------------- brand */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  min-width: 0;
+}
+
+/*
+ * The UW crest is drawn for light backgrounds: its outer ring is black and
+ * would vanish against the nav. A white circular chip lets it read as intended.
+ */
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 2px;
+  background: #fff;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.brand:hover .brandMark {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 12px rgba(110, 168, 254, 0.28);
+}
+
+.brandLogo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brandName {
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+
+.brand:hover .brandName {
+  color: var(--accent-bright);
+}
+
+/* ------------------------------------------------------------------- links */
+
+.links {
+  display: flex;
+  gap: 26px;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur) var(--ease);
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------------- right */
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ghost {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.ghost:hover {
+  color: var(--text);
+}
+
+.cta {
+  padding: 7px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.cta:hover {
+  color: #fff;
+  background: var(--accent-dim);
+  border-color: var(--line-accent);
+}
+
+/* --------------------------------------------------------- mobile controls */
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.burger span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+.barTop {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.barBottom {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+.sheet {
+  display: none;
+  border-top: 1px solid var(--line);
+  background: rgba(6, 8, 11, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.sheetLinks {
+  list-style: none;
+  padding: 8px var(--gutter) 20px;
+}
+
+.sheetLink {
+  display: block;
+  padding: 14px 0;
+  font-size: 16px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--line);
+  transition: color var(--dur) var(--ease);
+}
+
+.sheetLink:hover {
+  color: var(--text);
+}
+
+@media (max-width: 880px) {
+  .links,
+  .right {
+    display: none;
+  }
+  .burger {
     display: flex;
-    align-items: center;
-    gap: 28px;
-    padding: 12px 36px;
-
-    /* Remove fixed width for responsiveness */
-    width: max-content;
-    max-width: 100%;
-
-    /* Visual style (match skills section aesthetic) */
-    background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
-    border: 1px solid rgba(79,195,247,0.25);
-    border-radius: 32px;
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    box-shadow: 0 2px 6px -2px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05), 0 0 18px -4px rgba(79,195,247,0.55);
-
-    /* Border glow accent using outline technique */
-    position: absolute;
-    top: 0px;
-    transition: box-shadow .35s ease, border-color .35s ease, background .35s ease, transform .35s ease;
+  }
+  /* Only the open state becomes visible — the `hidden` attribute handles the
+     closed state, so this must not unconditionally set `display: block`. */
+  .sheetOpen {
+    display: block;
+  }
 }
 
-.navbar:hover {
-    box-shadow: 0 4px 14px -2px rgba(0,0,0,0.55), 0 0 0 1px rgba(79,195,247,0.65), 0 0 28px -2px rgba(79,195,247,0.75);
-    border-color: rgba(79,195,247,0.55);
-    transform: translateY(-2px);
+@media (max-width: 720px) {
+  /* The nav drops to 54px tall here, so the crest comes down with it. */
+  .brandMark {
+    width: 36px;
+    height: 36px;
+  }
 }
 
-.navLink {
-    position: relative;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    padding: 8px 16px; /* more tappable */
-    border-radius: 18px;
-    transition: color .35s ease;
-    isolation: isolate; /* keep glow contained */
-}
-
-/* Remove old underline effect; new layered glow */
-.navLink::before,
-.navLink::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transform: scale(.6) translateY(6px);
-    transition: opacity .45s cubic-bezier(.4,.8,.3,1), transform .55s cubic-bezier(.4,.8,.3,1), filter .55s ease;
-}
-
-/* Inner glass highlight */
-.navLink::before {
-    background: linear-gradient(135deg, rgba(79,195,247,0.22) 0%, rgba(79,195,247,0.08) 60%, rgba(255,255,255,0.04) 100%);
-    box-shadow: 0 0 0 0 rgba(79,195,247,0.6) inset, 0 0 0 0 rgba(79,195,247,0.35);
-    backdrop-filter: blur(4px) saturate(160%);
-    -webkit-backdrop-filter: blur(4px) saturate(160%);
-}
-
-/* Outer aura */
-.navLink::after {
-    background: radial-gradient(circle at 50% 60%, rgba(79,195,247,0.55), rgba(79,195,247,0) 70%);
-    filter: blur(14px);
-}
-
-.navLink:hover, .navLink:focus-visible, .active {
-    color: #4fc3f7;
-}
-
-.navLink:hover::before,
-.navLink:focus-visible::before,
-.active::before { opacity: 1; transform: scale(1) translateY(0); box-shadow: 0 0 0 1px rgba(79,195,247,0.55) inset, 0 0 18px -4px rgba(79,195,247,0.65); }
-
-.navLink:hover::after,
-.navLink:focus-visible::after,
-.active::after { opacity: .9; transform: scale(1) translateY(0); }
-
-.navLink:focus-visible { outline: none; }
-
-/* Active state utility (can be applied manually or later via path detection) */
-.active {
-    color: #4fc3f7;
-}
-.active::after {
-    opacity: 1;
-    transform: translateY(0) scaleX(1);
-}
-
-/* Animation Toggle Styles */
-.animationToggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto; /* Push to the rightmost position */
-}
-
-.toggleLabel {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-/* Switch Toggle */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(79, 195, 247, 0.3);
-    transition: all 0.3s ease;
-    border-radius: 24px;
-    backdrop-filter: blur(10px);
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 2px;
-    bottom: 2px;
-    background: #ffffff;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked + .slider {
-    background: rgba(79, 195, 247, 0.3);
-    border-color: #4fc3f7;
-    box-shadow: 0 0 10px rgba(79, 195, 247, 0.4);
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px);
-    background: #4fc3f7;
-    box-shadow: 0 2px 8px rgba(79, 195, 247, 0.4);
-}
-
-/* Hover effects */
-.switch:hover .slider {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(79, 195, 247, 0.5);
-}
-
-.switch:hover input:checked + .slider {
-    background: rgba(79, 195, 247, 0.4);
-    border-color: #4fc3f7;
-}
-
-/* Button styles to match navLink */
-.navLink button,
-button.navLink {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    letter-spacing: inherit;
-    padding: inherit;
-    border-radius: inherit;
-    transition: inherit;
-    color: white;
-}
-
-.navLink button:hover,
-button.navLink:hover {
-    color: #4fc3f7;
-}
-
-/* Responsive adjustments - multi-level breakpoints for better mobile experience */
-@media (max-width: 768px) {
-    .navbar {
-        gap: 16px;
-        padding: 8px 18px;
-        border-radius: 24px;
-    }
-    .navLink { 
-        font-size: 0.9rem; 
-        padding: 6px 10px; 
-    }
-    
-    .animationToggle {
-        gap: 5px;
-    }
-    
-    .toggleLabel {
-        font-size: 0.8rem;
-    }
-    
-    .switch {
-        width: 40px;
-        height: 22px;
-    }
-    
-    .slider:before {
-        height: 16px;
-        width: 16px;
-        left: 2px;
-        bottom: 2px;
-    }
-    
-    input:checked + .slider:before {
-        transform: translateX(18px);
-    }
-}
-
-@media (max-width: 560px) {
-    .navbar {
-        gap: 12px;
-        padding: 6px 14px;
-        border-radius: 20px;
-    }
-    .navLink { 
-        font-size: 0.8rem; 
-        padding: 4px 8px; 
-    }
-    
-    .animationToggle {
-        gap: 4px;
-    }
-    
-    .toggleLabel {
-        font-size: 0.7rem;
-    }
-    
-    .switch {
-        width: 36px;
-        height: 18px;
-    }
-    
-    .slider:before {
-        height: 12px;
-        width: 12px;
-        left: 2px;
-        bottom: 2px;
-    }
-    
-    input:checked + .slider:before {
-        transform: translateX(16px);
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar {
-        gap: 8px;
-        padding: 4px 10px;
-        border-radius: 18px;
-    }
-    .navLink { 
-        font-size: 0.75rem; 
-        padding: 3px 6px; 
-    }
-    
-    .animationToggle {
-        gap: 3px;
-    }
-    
-    .toggleLabel {
-        font-size: 0.65rem;
-    }
-    
-    .switch {
-        width: 32px;
-        height: 16px;
-    }
-    
-    .slider:before {
-        height: 10px;
-        width: 10px;
-        left: 2px;
-        bottom: 2px;
-    }
-    
-    input:checked + .slider:before {
-        transform: translateX(14px);
-    }
-}
-
-/* Extra small phones - make navbar even more compact */
-@media (max-width: 480px) {
-    .navbar {
-        gap: 6px;
-        padding: 3px 8px;
-        border-radius: 16px;
-    }
-    .navLink { 
-        font-size: 0.7rem; 
-        padding: 2px 5px; 
-    }
-    
-    .animationToggle {
-        gap: 2px;
-    }
-    
-    .toggleLabel {
-        font-size: 0.6rem;
-    }
-    
-    .switch {
-        width: 28px;
-        height: 14px;
-    }
-    
-    .slider:before {
-        height: 8px;
-        width: 8px;
-        left: 2px;
-        bottom: 2px;
-    }
-    
-    input:checked + .slider:before {
-        transform: translateX(12px);
-    }
-}
-
-/* Super compact for very small phones */
-@media (max-width: 360px) {
-    .navbar {
-        gap: 4px;
-        padding: 2px 6px;
-        border-radius: 14px;
-    }
-    .navLink { 
-        font-size: 0.65rem; 
-        padding: 2px 4px; 
-    }
-    
-    .animationToggle {
-        gap: 2px;
-    }
-    
-    .toggleLabel {
-        font-size: 0.55rem;
-    }
-    
-    .switch {
-        width: 24px;
-        height: 12px;
-    }
-    
-    .slider:before {
-        height: 6px;
-        width: 6px;
-        left: 2px;
-        bottom: 2px;
-    }
-    
-    input:checked + .slider:before {
-        transform: translateX(10px);
-    }
+@media (max-width: 420px) {
+  .brandName {
+    display: none;
+  }
 }

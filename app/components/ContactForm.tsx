@@ -1,144 +1,148 @@
-import React, { useState } from 'react'
-import styles from './ContactForm.module.css'
+"use client";
+
+import React, { useState } from "react";
+import { CONTACT_PAGE } from "../data/copy";
+import styles from "./ContactForm.module.css";
+
+/* Field labels and messages live in app/data/copy.ts under CONTACT_PAGE.form. */
+
+type Status = "idle" | "sending" | "sent" | "error";
 
 const ContactForm = () => {
-    const [name, setName] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [email, setEmail] = useState('')
-    const [subject, setSubject] = useState('')
-    const [message, setMessage] = useState('')
-    const [errorContactMessage, setErrorContactMessage] = useState<string>('')
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isSuccess, setIsSuccess] = useState(false)
+  const t = CONTACT_PAGE.form;
 
-    const contactEmail = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsSubmitting(true)
-        setErrorContactMessage('')
-        
-        try {
-            const res = await fetch('/api/contact_emails', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    phoneNumber,
-                    email,
-                    subject,
-                    message,
-                }),
-            })
-            
-            const resData = await res.json()
-            
-            if (resData.accepted) {
-                setIsSuccess(true)
-                setErrorContactMessage('Message sent successfully! I\'ll get back to you soon.')
-                // Clear form
-                setName('')
-                setPhoneNumber('')
-                setEmail('')
-                setSubject('')
-                setMessage('')
-            } else {
-                setErrorContactMessage(resData.message || 'Failed to send message. Please try again.')
-            }
-        } catch (error) {
-            setErrorContactMessage('Network error. Please check your connection and try again.')
-        } finally {
-            setIsSubmitting(false)
-        }
+  const fields = [
+    { id: "name", label: t.name, type: "text", required: true, autoComplete: "name" },
+    {
+      id: "email",
+      label: t.email,
+      type: "email",
+      required: true,
+      autoComplete: "email",
+    },
+    {
+      id: "phoneNumber",
+      label: t.phone,
+      type: "tel",
+      required: false,
+      autoComplete: "tel",
+    },
+    {
+      id: "subject",
+      label: t.subject,
+      type: "text",
+      required: true,
+      autoComplete: "off",
+    },
+  ] as const;
+
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<Status>("idle");
+  const [feedback, setFeedback] = useState("");
+
+  const update =
+    (key: string) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setValues((v) => ({ ...v, [key]: e.target.value }));
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    setFeedback("");
+
+    try {
+      const res = await fetch("/api/contact_emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.accepted) {
+        setStatus("sent");
+        setFeedback(t.success);
+        setValues({ name: "", email: "", phoneNumber: "", subject: "", message: "" });
+      } else {
+        setStatus("error");
+        setFeedback(data.message || t.failure);
+      }
+    } catch {
+      setStatus("error");
+      setFeedback(t.networkError);
     }
+  };
 
-    return (
-        <div className={styles.contactContainer}>
-            <div className={styles.formWrapper}>
-                <h2 className={styles.formTitle}>Get In Touch</h2>
-                <p className={styles.formSubtitle}>
-                    Have a project in mind? Let&apos;s discuss how we can bring your ideas to life.
-                </p>
-                
-                <form onSubmit={contactEmail} className={styles.contactForm}>
-                    <div className={styles.inputGroup}>
-                        <input 
-                            type="text" 
-                            placeholder='Your Name' 
-                            value={name} 
-                            onChange={(e) => setName(e.target.value)}
-                            className={styles.inputField}
-                            required
-                        />
-                    </div>
-                    
-                    <div className={styles.inputGroup}>
-                        <input 
-                            type="email" 
-                            placeholder='Your Email' 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)}
-                            className={styles.inputField}
-                            required
-                        />
-                    </div>
-                    
-                    <div className={styles.inputGroup}>
-                        <input 
-                            type="tel" 
-                            placeholder='Phone Number (Optional)' 
-                            value={phoneNumber} 
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                            className={styles.inputField}
-                        />
-                    </div>
-                    
-                    <div className={styles.inputGroup}>
-                        <input 
-                            type="text" 
-                            placeholder='Subject' 
-                            value={subject} 
-                            onChange={(e) => setSubject(e.target.value)}
-                            className={styles.inputField}
-                            required
-                        />
-                    </div>
-                    
-                    <div className={styles.inputGroup}>
-                        <textarea 
-                            placeholder='Your Message' 
-                            value={message} 
-                            onChange={(e) => setMessage(e.target.value)}
-                            className={`${styles.inputField} ${styles.textareaField}`}
-                            rows={5}
-                            required
-                        />
-                    </div>
-                    
-                    <button 
-                        type='submit' 
-                        className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <span className={styles.spinner}></span>
-                                Sending...
-                            </>
-                        ) : (
-                            'Send Message'
-                        )}
-                    </button>
-                </form>
-                
-                {errorContactMessage && (
-                    <div className={`${styles.message} ${isSuccess ? styles.successMessage : styles.errorMessage}`}>
-                        {errorContactMessage}
-                    </div>
-                )}
-            </div>
+  const sending = status === "sending";
+
+  return (
+    <form onSubmit={submit} className={styles.form}>
+      <div className={styles.grid}>
+        {fields.map((field) => (
+          <div
+            key={field.id}
+            className={`${styles.field} ${
+              field.id === "subject" ? styles.spanFull : ""
+            }`}
+          >
+            <label htmlFor={field.id} className={styles.label}>
+              {field.label}
+              {!field.required && <span className={styles.optional}>{t.optional}</span>}
+            </label>
+            <input
+              id={field.id}
+              name={field.id}
+              type={field.type}
+              value={values[field.id]}
+              onChange={update(field.id)}
+              required={field.required}
+              autoComplete={field.autoComplete}
+              disabled={sending}
+              className={styles.input}
+            />
+          </div>
+        ))}
+
+        <div className={`${styles.field} ${styles.spanFull}`}>
+          <label htmlFor="message" className={styles.label}>
+            {t.message}
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={values.message}
+            onChange={update("message")}
+            required
+            rows={6}
+            disabled={sending}
+            className={`${styles.input} ${styles.textarea}`}
+          />
         </div>
-    )
-}
+      </div>
 
-export default ContactForm
+      <div className={styles.actions}>
+        <button type="submit" className={styles.submit} disabled={sending}>
+          {sending ? t.submitting : t.submit}
+        </button>
+
+        {/* Announced to screen readers when the request resolves. */}
+        <p
+          role="status"
+          aria-live="polite"
+          className={`${styles.feedback} ${status === "error" ? styles.error : ""} ${
+            status === "sent" ? styles.success : ""
+          }`}
+        >
+          {feedback}
+        </p>
+      </div>
+    </form>
+  );
+};
+
+export default ContactForm;

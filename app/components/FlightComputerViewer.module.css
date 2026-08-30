@@ -1,0 +1,270 @@
+/*
+ * Absolutely positioned rather than `height: 100%` on purpose.
+ *
+ * Every child in here is out of flow (the canvas stage, the overlays, the
+ * callouts), so this element has zero content height. A percentage height only
+ * resolves against a parent with a *definite* height — when the parent's height
+ * comes from flex growth or a min-height, it doesn't, and this collapses to 0,
+ * which silently kills the canvas. Filling the positioned parent with inset:0
+ * uses the parent's *used* height instead, which always works.
+ *
+ * The parent must be `position: relative` (see .boardViewport).
+ */
+.wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.grabbing {
+  cursor: grabbing;
+}
+
+.canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ----------------------------------------------------------------- callouts */
+
+/* Leader-line layer. Sits above the canvas, below the labels. */
+.leaders {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.leaderLine {
+  fill: none;
+  stroke: rgba(110, 168, 254, 0.42);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+/* Dot pinned to the component itself. */
+.dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow: 0 0 0 1px rgba(6, 8, 11, 0.9), 0 0 14px 2px var(--accent-glow);
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 300ms var(--ease);
+}
+
+/*
+ * Label box. The outer element is moved to its column slot with a transform;
+ * the inner box handles alignment so the two transforms don't fight.
+ */
+.callout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition: opacity 300ms var(--ease);
+}
+
+.calloutBody {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: max-content;
+  max-width: 168px;
+  padding: 6px 10px;
+  background: rgba(8, 11, 16, 0.86);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Left column: box grows rightward from the edge. */
+.callout[data-side="left"] .calloutBody {
+  transform: translateY(-50%);
+  border-left-color: var(--line-accent);
+}
+
+/* Right column: box grows leftward from the edge. */
+.callout[data-side="right"] .calloutBody {
+  transform: translate(-100%, -50%);
+  border-right-color: var(--line-accent);
+  text-align: right;
+}
+
+.designator {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.calloutLabel {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.calloutDetail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--text-dim);
+  letter-spacing: -0.005em;
+}
+
+/* ------------------------------------------------------- overlays and hint */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.loaderTrack {
+  width: 132px;
+  height: 1px;
+  background: var(--line-strong);
+  overflow: hidden;
+}
+
+.loaderFill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 200ms linear;
+}
+
+.overlayText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  max-width: 30ch;
+}
+
+.hint {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------- labels toggle */
+
+.labelsToggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 7px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: rgba(8, 11, 16, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.labelsToggle:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: rgba(8, 11, 16, 0.92);
+}
+
+.switch {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 11px;
+  background: rgba(255, 255, 255, 0.11);
+  border-radius: 100px;
+  transition: background var(--dur) var(--ease);
+}
+
+.switchOn {
+  background: var(--accent);
+}
+
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  background: #cdd6e0;
+  border-radius: 50%;
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.switchOn .knob {
+  background: #05070a;
+  transform: translateX(9px);
+}
+
+@media (max-width: 900px) {
+  .calloutBody {
+    max-width: 132px;
+    padding: 4px 7px;
+  }
+  .calloutLabel {
+    font-size: 11px;
+  }
+  /* Drop the third line so eight labels still fit the shorter panel. */
+  .calloutDetail {
+    display: none;
+  }
+}
