@@ -60,7 +60,7 @@ export const PROJECTS: Project[] = [
       "A 4-layer avionics board I designed end to end: schematic, layout, assembly, and the firmware that runs on it.",
     detail: [
       "KRAKENBANE I is the flight computer you can rotate at the top of this page — the model is the real CAD export, not a stand-in.",
-      "The board packs inertial and barometric sensing, a high-g accelerometer for the motor burn period, and removable microSD logging with onboard flash as a backup, into a 38 × 100 mm 4-layer stack-up. It also connects to a separate 42x70 mm 4-layer GNSS breakout board, and an XBee Radio module for telemetry, via JST-GH modules.",
+      "The board packs inertial and barometric sensing, a high-g accelerometer for the motor burn period, and removable microSD logging with onboard flash as a backup, into a 38 × 100 mm 4-layer stack-up. It also connects to a separate 42x70 mm 4-layer GNSS breakout board and an XBee Radio module for telemetry, via JST-GH modules.",
       // TODO(Ilyaas): this is the one project you know better than anyone —
       // expand on the design decisions, what failed, and what you'd change.
       "I took it from schematic capture through layout, assembly and bring-up, then wrote the firmware that runs on it.",
@@ -78,7 +78,7 @@ export const PROJECTS: Project[] = [
       { src: "/logos/GNSS3D.png", caption: "GNSS breakout board 3D model", fit: "contain" }, { src: "/logos/real.png", caption: "Main DAQ, GNSS breakout, and XBee module, side by side on their mounts (post-recovery)", fit: "contain" }, { src: "/logos/avbay.png", caption: "KRAKENBANE I mounted in avbay (post-recovery)", fit: "contain" }, { src: "/logos/krakenbane_one.png", caption: "Main DAQ board kiCad PCB layout", fit: "contain" }, { src: "/logos/GNSS.png", caption: "GNSS breakout board kiCad PCB layout", fit: "contain" }, { src: "/logos/daqschematic.png", caption: "Main DAQ board kiCad schematic", fit: "contain" }, { src: "/logos/GNSSschematic.png", caption: "GNSS breakout board kiCad schematic", fit: "contain" }],
   },
   {
-    id: "guepard",
+    id: "guepardone",
     title: "GUEPARD I",
     blurb: "Custom Teensy 4.0 pitot tube flight computer for a high-power model rocket. Also flown at Launch Canada 2026",
     description:
@@ -92,6 +92,7 @@ export const PROJECTS: Project[] = [
     ],
     tags: ["PCB Design", "Teensy 4.0", "Firmware", "Avionics", "C++", "kiCad"],
     role: "Hardware design, layout and firmware",
+    github: "https://github.com/IlyaasAitSimmou/guepard_one_pcb",
     year: "2026",
     flagship: true,
     // TODO(Ilyaas): add photos of the real board — bare PCB, assembled,
@@ -125,7 +126,7 @@ export const PROJECTS: Project[] = [
     title: "Numina",
     blurb: "Turns any topic into a narrated math animation, with a live AI tutor.",
     description:
-      "A web application that instantly turns any topic into a narrated math animation, paired with a live AI agent for personalised tutoring.",
+      "A web application that instantly turns any topic into a narrated math animation, paired with a live AI agent for personalized tutoring.",
     detail: [
       "Numina takes a topic a student is stuck on and generates a narrated animation explaining it, so the explanation is visual rather than a wall of text.",
       "A live AI agent sits alongside the animation to answer follow-up questions, which keeps the student in one place instead of bouncing between tabs.",
@@ -168,19 +169,18 @@ export const PROJECTS: Project[] = [
   {
     id: "simad",
     title: "SIMAD Foundation",
-    blurb: "Production website for a competition-based learning nonprofit.",
+    blurb: "Application portal and website for SIMAD, an engineering-competition nonprofit I co-founded — deployed over a year ago and still running. Note: the organization has been disbanded.",
     description:
-      "The official website of SIMAD, an organisation focused on giving students competition-based learning experiences. Built and shipped to production.",
+      "I deployed a Django app on Vercel with Dropbox API document storage for applicant resumés; worked around free-tier Postgres limits and hourly OAuth expiry via scheduled token refresh. The website is still live and has been running for over a year.",
     detail: [
-      "SIMAD runs competition-based learning programmes for students. This is their public site — the thing prospective students and parents actually land on.",
-      "It is live and in production at simadfoundation.com, which meant designing for real content and real traffic rather than a demo.",
+      "SIMAD was a non-profit organization I co-founded in high school with 3 other students. I focused on developing the organization's website and an applicant system using Django. During our period of operations, members of our executive team also contributed to the frontend of the website and are credited in its team section. Ultimately though, the rest of my team and I discontinued the project.",
     ],
-    tags: ["Next.js", "Production", "Web"],
-    image: "/logos/simad.png",
+    tags: ["Python", "Django", "Production", "Full-Stack", "Web Dev", "PostgreSQL", "Dropbox API"],
+    image: "/logos/simadweb2.png",
     imageFit: "cover",
-    gallery: [{ src: "/logos/simad.png", fit: "cover" }],
+    gallery: [{ src: "/logos/simad.png", fit: "cover" }, { src: "/logos/simadweb2.png", fit: "cover" }],
     github: "https://github.com/IlyaasAitSimmou/simad_website",
-    demo: "https://simadfoundation.com/",
+    demo: "https://simad-website.vercel.app/",
     year: "2025",
   },
   {
@@ -229,7 +229,7 @@ export const PROJECTS: Project[] = [
     title: "Classcade",
     blurb: "Google Classroom, gamified — student diligence drives player stats.",
     description:
-      "A Google Classroom style platform where learning is gamified: player stats improve as students stay diligent.",
+      "A Google Classroom-style platform where learning is gamified: player stats improve as students stay diligent.",
     detail: [
       "Classcade reframes coursework as a game. Keeping up with assignments raises your character's stats, so the incentive to stay on top of work is built into the interface rather than bolted on.",
     ],
