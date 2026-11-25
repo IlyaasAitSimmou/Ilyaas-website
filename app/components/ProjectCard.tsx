@@ -11,30 +11,31 @@ type Props = {
 
 const ProjectCard = ({ project, onOpen }: Props) => {
   const links = [
-    project.demo && { label: "Live", href: project.demo },
+    project.demo && { label: project.demoLabel ?? "Live", href: project.demo },
     project.github && { label: "Source", href: project.github },
     project.devpost && { label: "Devpost", href: project.devpost },
   ].filter(Boolean) as { label: string; href: string }[];
 
   return (
     <article className={styles.card}>
-      {project.image && (
-        <div
-          className={styles.thumb}
-          style={
-            project.imageBackdrop ? { background: project.imageBackdrop } : undefined
-          }
-        >
+      {/* No image yet: the frame stays, blank, so the cards line up. */}
+      <div
+        className={styles.thumb}
+        style={
+          project.imageBackdrop ? { background: project.imageBackdrop } : undefined
+        }
+      >
+        {project.image && (
           <Image
             src={project.image}
             alt=""
             fill
-            sizes="(max-width: 900px) 100vw, 420px"
+            sizes="(max-width: 720px) 100vw, 610px"
             className={styles.thumbImg}
             style={{ objectFit: project.imageFit ?? "cover" }}
           />
-        </div>
-      )}
+        )}
+      </div>
 
       <div className={styles.body}>
         <header className={styles.head}>

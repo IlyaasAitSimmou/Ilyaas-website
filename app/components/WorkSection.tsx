@@ -14,7 +14,12 @@
 import { useCallback, useRef, useState } from "react";
 import { WORK } from "../data/copy";
 import { EXPERIENCES, type Experience } from "../data/experiences";
-import { PROJECTS, type Project } from "../data/projects";
+import {
+  FEATURED_PROJECTS,
+  OTHER_PROJECTS,
+  PROJECTS,
+  type Project,
+} from "../data/projects";
 import DetailOverlay, { type DetailItem } from "./DetailOverlay";
 import ExperienceCard from "./ExperienceCard";
 import ProjectCard from "./ProjectCard";
@@ -25,10 +30,11 @@ type Tab = "projects" | "experiences";
 function projectToDetail(p: Project): DetailItem {
   const meta: DetailItem["meta"] = [];
   if (p.year) meta.push({ label: "Year", value: p.year });
+  if (p.award) meta.push({ label: "Award", value: p.award });
   if (p.role) meta.push({ label: "Role", value: p.role });
 
   const links = [
-    p.demo && { label: "Live site", href: p.demo },
+    p.demo && { label: p.demoLabel ?? "Live site", href: p.demo },
     p.github && { label: "Source", href: p.github },
     p.devpost && { label: "Devpost", href: p.devpost },
   ].filter(Boolean) as DetailItem["links"];
@@ -39,6 +45,8 @@ function projectToDetail(p: Project): DetailItem {
     meta,
     description: p.description,
     paragraphs: p.detail,
+    stats: p.stats,
+    sections: p.sections,
     tags: p.tags,
     gallery: p.gallery ?? [],
     links,
@@ -153,12 +161,38 @@ const WorkSection = () => {
           hidden={tab !== "projects"}
         >
           <ul className={styles.projectGrid}>
-            {PROJECTS.map((project) => (
+            {FEATURED_PROJECTS.map((project) => (
               <li key={project.id}>
                 <ProjectCard project={project} onOpen={openProject} />
               </li>
             ))}
           </ul>
+
+          {OTHER_PROJECTS.length > 0 && (
+            <>
+              <h3 className={styles.otherTitle}>{WORK.otherTitle}</h3>
+              <ul className={styles.otherList}>
+                {OTHER_PROJECTS.map((project) => (
+                  <li key={project.id}>
+                    <button
+                      type="button"
+                      className={styles.otherRow}
+                      onClick={() => openProject(project)}
+                    >
+                      <span className={styles.otherYear}>{project.year}</span>
+                      <span className={styles.otherName}>
+                        {project.title}
+                        {project.award && (
+                          <span className={styles.award}>{project.award}</span>
+                        )}
+                      </span>
+                      <span className={styles.otherBlurb}>{project.blurb}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         {hasExperiences && (

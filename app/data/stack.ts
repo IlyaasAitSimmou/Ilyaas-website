@@ -32,11 +32,11 @@ export const SKILL_GROUPS: SkillGroup[] = [
     index: "01",
     summary: "What I write day to day.",
     skills: [
-      { name: "TypeScript", image: "/logos/Typescript.png" },
-      { name: "Python", image: "/logos/Python.png" },
       { name: "C", image: "/logos/C.png" },
       { name: "C++", image: "/logos/C++.png" },
+      { name: "Python", image: "/logos/Python.png" },
       { name: "JavaScript", image: "/logos/JavaScript.png" },
+      { name: "TypeScript", image: "/logos/Typescript.png" },
       { name: "HTML5", image: "/logos/HTML5.png" },
       { name: "CSS3", image: "/logos/CSS3.png" },
     ],
@@ -47,14 +47,26 @@ export const SKILL_GROUPS: SkillGroup[] = [
     summary: "Hardware and Embedded Systems.",
     skills: [
       { name: "KiCad", image: "/logos/kicad.png" },
-      { name: "CubeIDE/HAL", image: "/logos/stm32.png" },
+      { name: "STM32 (CubeIDE/HAL)", image: "/logos/stm32.png" },
       { name: "Teensy", image: "/logos/pjrc.png" },
       { name: "Arduino", image: "/logos/arduino.png" },
     ],
   },
   {
-    title: "Web Dev/Frameworks & Tooling",
+    title: "Data",
     index: "03",
+    summary: "Data Analysis",
+    skills: [
+      { name: "Matplotlib", image: "/logos/matplotlib.png" },
+      { name: "Numpy", image: "/logos/numpy.png" },
+      { name: "SciPy", image: "/logos/scipy.png" },
+      { name: "Numba", image: "/logos/numba.png" },
+      { name: "scikit-learn", image: "/logos/scikitlearn.png" },
+    ],
+  },
+  {
+    title: "Web Dev/Frameworks & Tooling",
+    index: "04",
     summary: "How I build and ship software.",
     skills: [
       { name: "Next.js", image: "/logos/nextjs.png", tone: "dark" },
@@ -65,19 +77,6 @@ export const SKILL_GROUPS: SkillGroup[] = [
       { name: "PostgreSQL", image: "/logos/postgresql.png" },
       { name: "MySQL", image: "/logos/mysql.png" },
       { name: "Git", image: "/logos/git.png" },
-      { name: "OpenGL", image: "/logos/opengl.png" },
-    ],
-  },
-  {
-    title: "Data",
-    index: "04",
-    summary: "Data Analysis",
-    skills: [
-      { name: "Matplotlib", image: "/logos/matplotlib.png" },
-      { name: "Numpy", image: "/logos/numpy.png" },
-      { name: "SciPy", image: "/logos/scipy.png" },
-      { name: "Numba", image: "/logos/numba.png" },
-      { name: "scikit-learn", image: "/logos/scikitlearn.png" },
     ],
   },
 ];

@@ -14,7 +14,9 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GalleryImage } from "../data/projects";
+import { createPortal } from "react-dom";
+import type { DetailSection, GalleryImage } from "../data/projects";
+import DetailSections from "./DetailSections";
 import styles from "./DetailOverlay.module.css";
 
 export type DetailItem = {
@@ -25,6 +27,8 @@ export type DetailItem = {
   meta: { label: string; value: string }[];
   description: string;
   paragraphs: string[];
+  stats?: { label: string; value: string }[];
+  sections?: DetailSection[];
   highlights?: string[];
   tags?: string[];
   gallery: GalleryImage[];
@@ -37,7 +41,7 @@ type Props = {
 };
 
 const FOCUSABLE =
-  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  'a[href], button:not([disabled]), summary, video[controls], [tabindex]:not([tabindex="-1"])';
 
 const DetailOverlay = ({ item, onClose }: Props) => {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -69,6 +73,10 @@ const DetailOverlay = ({ item, onClose }: Props) => {
     closeRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
+      // A focused chart uses the arrow keys itself.
+      if (e.defaultPrevented) return;
+      // So does a focused video, for seeking.
+      if (e.target instanceof HTMLVideoElement && e.key.startsWith("Arrow")) return;
       if (e.key === "Escape") {
         e.preventDefault();
         onClose();
@@ -117,7 +125,9 @@ const DetailOverlay = ({ item, onClose }: Props) => {
 
   const current = gallery[index];
 
-  return (
+  // Portalled to <body>: the sections set their own z-index, so an overlay
+  // rendered inside one would sit under the nav and the sections after it.
+  return createPortal(
     <div
       className={styles.backdrop}
       onClick={(e) => {
@@ -148,16 +158,30 @@ const DetailOverlay = ({ item, onClose }: Props) => {
               className={styles.frame}
               style={current?.backdrop ? { background: current.backdrop } : undefined}
             >
-              <Image
-                key={current.src}
-                src={current.src}
-                alt={current.caption ?? `${item.title} — image ${index + 1}`}
-                fill
-                sizes="(max-width: 900px) 100vw, 760px"
-                className={styles.image}
-                style={{ objectFit: current.fit ?? "cover" }}
-                priority
-              />
+              {current.video ? (
+                <video
+                  key={current.video}
+                  src={current.video}
+                  poster={current.src}
+                  aria-label={current.caption ?? `${item.title} video`}
+                  className={styles.video}
+                  controls
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <Image
+                  key={current.src}
+                  src={current.src}
+                  alt={current.caption ?? `${item.title} — image ${index + 1}`}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 760px"
+                  className={styles.image}
+                  style={{ objectFit: current.fit ?? "cover" }}
+                  priority
+                />
+              )}
 
               {multiple && (
                 <>
@@ -233,6 +257,17 @@ const DetailOverlay = ({ item, onClose }: Props) => {
 
           <p className={styles.description}>{item.description}</p>
 
+          {item.stats && (
+            <dl className={styles.stats}>
+              {item.stats.map((s) => (
+                <div key={s.label}>
+                  <dt className={styles.statLabel}>{s.label}</dt>
+                  <dd className={styles.statValue}>{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
           {item.paragraphs.map((p, i) => (
             <p key={i} className={styles.paragraph}>
               {p}
@@ -248,6 +283,8 @@ const DetailOverlay = ({ item, onClose }: Props) => {
               ))}
             </ul>
           )}
+
+          {item.sections && <DetailSections sections={item.sections} />}
 
           {item.tags && item.tags.length > 0 && (
             <ul className={styles.tags}>
@@ -277,7 +314,8 @@ const DetailOverlay = ({ item, onClose }: Props) => {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

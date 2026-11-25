@@ -25,8 +25,8 @@
 export const PERSON = {
   name: "Ilyaas Ait Simmou",
   /** Shown under your name in the footer. */
-  uni: "Incoming Computer Engineering @ University of Waterloo",
-  role: "Incoming Computer Engineering @University of Waterloo | Embedded Systems + Software Dev",
+  uni: "Computer Engineering @ University of Waterloo",
+  role: "Computer Engineering @ University of Waterloo | PCB Design + Embedded Firmware",
   /**
    * Crest shown at the top-left of the nav. Any square image in `public/`
    * works; its display size is set by `.brandMark` in NavBar.module.css.
@@ -44,14 +44,13 @@ export const META = {
   titleTemplate: "%s · Ilyaas Ait Simmou",
   /** Used by Google and link previews. Keep it under ~155 characters. */
   description:
-    "Ilyaas Ait Simmou — embedded systems and full-stack engineer. I design flight computer hardware and the software that flies on it. I've also built many software applications",
+    "Ilyaas Ait Simmou — PCB design and embedded firmware. I design flight computers; two have flown on a supersonic rocket.",
   keywords: [
     "Ilyaas Ait Simmou",
     "embedded systems",
     "flight computer",
     "avionics",
     "STM32",
-    "full-stack engineer",
     "rocketry",
     "PCB design",
   ],
@@ -79,7 +78,7 @@ export const HERO = {
    * `**text**` renders as brighter, emphasised text.
    */
   subhead:
-    "Embedded firmware, PCB design, Signal Processing, Data analysis, full-stack app/web development. Built **KRAKENBANE I** — a data-acquisition (DAQ) flight computer I took from schematic to firmware. Flown on a supersonic rocket (Mach 1.16, 12,100+ ft). Altitude agreed within 0.2% of the Blue Raven and velocity within 3%.",
+    "PCB design and embedded firmware. I designed **KRAKENBANE I**, a data-acquisition flight computer, and **GUEPARD I**, a pitot tube board. Both flew on a supersonic rocket (Mach 1.16, 12,100+ ft) at Launch Canada 2026. Altitude agreed within 0.2% of the RRC3 altimeter, and the pitot read Mach 1.165.",
   primaryCta: { label: "View selected work", href: "#work" },
   secondaryCta: { label: "Get in touch", href: "/contact" },
 };
@@ -102,10 +101,12 @@ export const VIEWER = {
 export const WORK = {
   index: "01",
   title: "Selected work",
-  lede: "Flight Computer Hardware, machine learning, simulation, and production web applications, and hackathon team projects.",
+  lede: "Flight computer hardware, simulation and hackathon builds.",
   /** Labels for the two tabs above the grid. */
   projectsTab: "Projects",
   experiencesTab: "Experiences",
+  /** Heading over the compact list under the featured cards. */
+  otherTitle: "Other projects",
   /** Shown on a card to invite a click. */
   openLabel: "View details",
 };
@@ -113,7 +114,7 @@ export const WORK = {
 export const STACK = {
   index: "02",
   title: "Stack",
-  lede: "The tools I reach for, grouped by where they sit in a project — from register-level firmware up to the interface a user touches.",
+  lede: "The tools I reach for, grouped by where they sit in a project — from boards and HAL-based firmware up to the interface a user touches.",
 };
 
 export const CONTACT = {
@@ -126,7 +127,7 @@ export const CONTACT = {
 export const CONTACT_PAGE = {
   metaTitle: "Contact",
   metaDescription:
-    "Get in touch with Ilyaas Ait Simmou about embedded systems, flight hardware, or full-stack engineering work.",
+    "Get in touch with Ilyaas Ait Simmou about PCB design, embedded firmware, or flight hardware.",
   index: "Contact",
   title: "Let's talk.",
   lede: "I'm open to internships, hardware collaborations and engineering work. Tell me what you're building and I'll get back to you.",

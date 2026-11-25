@@ -93,13 +93,66 @@
 
 .projectGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   list-style: none;
 }
 
 .projectGrid > li {
   display: flex;
+}
+
+/* Compact rows for everything that isn't a featured card. */
+.otherTitle {
+  margin: 44px 0 14px;
+  font-size: 18px;
+}
+
+.otherList {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.otherRow {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 5fr) minmax(0, 7fr);
+  gap: 20px;
+  align-items: baseline;
+  width: 100%;
+  padding: 13px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--dur) var(--ease);
+}
+
+.otherRow:hover {
+  background: var(--surface-hover);
+}
+
+.otherYear {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+
+.otherName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  font-size: 14.5px;
+  color: var(--text);
+}
+
+.award {
+  font-size: 12.5px;
+  color: var(--accent-bright);
+}
+
+.otherBlurb {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
 }
 
 .experienceList {
@@ -127,5 +180,10 @@
 @media (max-width: 720px) {
   .projectGrid {
     grid-template-columns: 1fr;
+  }
+  .otherRow {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    padding: 13px 2px;
   }
 }

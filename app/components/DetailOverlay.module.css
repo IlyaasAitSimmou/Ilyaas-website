@@ -78,6 +78,14 @@
   transition: opacity 200ms var(--ease);
 }
 
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .navBtn {
   position: absolute;
   top: 50%;
@@ -223,6 +231,24 @@
   margin-bottom: 14px;
   font-size: 15.5px;
   line-height: 1.6;
+  color: var(--text);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px 20px;
+  margin: 20px 0;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.statValue {
+  font-size: 20px;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 

@@ -17,7 +17,7 @@ export const BOARD = {
   subsystem: "DAQ V4.1 Flight Computer",
   /** Shown in the strip under the 3D view. */
   dimensions: "38 × 100 mm",
-  layers: "4-layer PCB · 1.5 mm",
+  layers: "4-layer PCB · 1.6 mm",
   revision: "4.1",
   /** The four figures under the hero text. */
   stats: [

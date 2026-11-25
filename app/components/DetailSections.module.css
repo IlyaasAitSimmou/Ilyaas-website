@@ -1,0 +1,171 @@
+.section {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.title {
+  margin-bottom: 12px;
+  font-size: 16px;
+  letter-spacing: -0.015em;
+}
+
+.text {
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.bullets {
+  list-style: none;
+}
+
+.bullet {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 9px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.bullet::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.chartNote {
+  margin: -10px 0 20px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------- bus map */
+
+.map {
+  display: flex;
+  align-items: stretch;
+  margin: 4px 0 18px;
+}
+
+.hub {
+  display: grid;
+  place-items: center;
+  flex: 0 0 128px;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  text-align: center;
+  color: var(--text);
+  background: var(--accent-dim);
+  border: 1px solid var(--line-accent);
+  border-radius: var(--radius);
+}
+
+.branches {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  list-style: none;
+}
+
+.branch {
+  display: flex;
+  align-items: center;
+}
+
+/* The bus label sits on the wire between the hub and the part. */
+.bus {
+  position: relative;
+  flex: 0 0 104px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-align: center;
+  color: var(--accent-bright);
+}
+
+.bus::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--line-accent);
+}
+
+.part,
+.link {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.note {
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------- power chain */
+
+.chain {
+  display: flex;
+  gap: 26px;
+  margin: 4px 0 16px;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+}
+
+.link + .link::before {
+  content: "→";
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .hub {
+    flex-basis: 84px;
+    padding: 8px;
+    font-size: 10px;
+  }
+  .bus {
+    flex-basis: 68px;
+    padding: 0 4px;
+    font-size: 9.5px;
+  }
+  .chain {
+    flex-direction: column;
+  }
+  .link + .link::before {
+    content: "↓";
+    left: 12px;
+    top: -14px;
+  }
+}

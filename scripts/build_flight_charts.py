@@ -1,0 +1,108 @@
+"""Regenerates app/data/flightCharts.ts from the raw flight logs.
+
+    python scripts/build_flight_charts.py <AerospaceProjects folder>
+
+Needs numpy. Nothing is smoothed here: series are only cropped, unit-converted
+and downsampled, so every plotted point is a logged or pipeline-output sample.
+"""
+import csv, json, sys
+from pathlib import Path
+import numpy as np
+
+ROOT = Path(sys.argv[1])
+LOGS, KSP = ROOT / "Flight_logs_readers", ROOT / "KerbalSpaceProgram"
+OUT = Path(__file__).resolve().parent.parent / "app/data/flightCharts.ts"
+LIFTOFF = 1298.097  # s of DAQ uptime (FLIGHT13)
+FT = 3.28084
+BLUE, ORANGE = "#5b96ee", "#d95926"
+
+
+def rows(p):
+    with open(p, newline="") as f:
+        yield from csv.DictReader(f)
+
+
+def cols(p, *names, where=lambda r: True):
+    out = [[float(r[n]) for n in names] for r in rows(p) if where(r)]
+    return np.array(out).T
+
+
+def pts(x, y, lo, hi, n, xd=2, yd=3):
+    """Crop to [lo, hi] and downsample to ~n points, keeping the maximum."""
+    m = (x >= lo) & (x <= hi)
+    x, y = x[m], y[m]
+    idx = set(np.linspace(0, len(x) - 1, min(n, len(x))).astype(int)) | {int(y.argmax())}
+    return [[round(float(x[i]), xd), round(float(y[i]), yd)] for i in sorted(idx)]
+
+
+charts = {}
+
+# --- KRAKENBANE I: altitude -------------------------------------------------
+t, h, p = cols(LOGS / "daq_results2/DAQ_RAW_processed.csv", "t_since_liftoff_s", "altitude_m", "pressure_pa")
+tf, pf = cols(LOGS / "daq_results2/FLASHALL_processed.csv", "t_since_liftoff_s", "pressure_pa")
+charts["krakenAltitude"] = dict(
+    title="Altitude above the pad, liftoff through apogee",
+    xLabel="Seconds since liftoff", yLabel="Altitude (ft)", xDigits=1, yDigits=0,
+    series=[dict(name="KRAKENBANE I", color=BLUE, points=pts(t, h * FT, -2, 40, 260, 2, 0))],
+    refs=[dict(y=12132, label="RRC3 peak 12,132 ft")])
+charts["krakenMemories"] = dict(
+    title="Barometer pressure, recovered from each memory",
+    xLabel="Seconds since liftoff", yLabel="Pressure (kPa)", xDigits=1, yDigits=2,
+    series=[dict(name="microSD", color=BLUE, points=pts(t, p / 1000, -5, 240, 220)),
+            dict(name="SPI flash", color=ORANGE, dash=True, points=pts(tf, pf / 1000, -5, 240, 220))])
+
+# --- KRAKENBANE I: boost acceleration, as logged by the firmware -------------
+lsm, adxl = [], []
+for r in rows(LOGS / "DAQ_RAW.CSV"):
+    k = r["record_type"]
+    if k in ("LSM", "ADXL"):
+        s = int(r["uptime_us"]) / 1e6 - LIFTOFF
+        if -0.3 <= s <= 3.2:
+            (lsm if k == "LSM" else adxl).append((s, int(r["accel_y_mg"]) / 1000))
+lsm, adxl = np.array(lsm).T, np.array(adxl).T
+charts["krakenBoost"] = dict(
+    title="Long-axis acceleration through the motor burn",
+    xLabel="Seconds since liftoff", yLabel="Acceleration (g)", xDigits=2, yDigits=1,
+    series=[dict(name="ADXL375 (±200 g)", color=BLUE, points=pts(*adxl, -0.3, 3.2, 300, 3, 2)),
+            dict(name="LSM6DSV32X (set to ±16 g)", color=ORANGE, points=pts(*lsm, -0.3, 3.2, 240, 3, 2))],
+    refs=[dict(y=16, label="IMU full scale, 16 g")])
+
+# --- GUEPARD I: Mach ---------------------------------------------------------
+t, m = cols(LOGS / "pitot_data/pitot_processed.csv", "t_since_liftoff_s", "mach")
+charts["guepardMach"] = dict(
+    title="Mach number from the pitot tube",
+    xLabel="Seconds since launch detection", yLabel="Mach", xDigits=2, yDigits=3,
+    series=[dict(name="GUEPARD I", color=BLUE, points=pts(t, m, -0.3, 24, 340, 2, 4))],
+    refs=[dict(y=1.16, label="Blue Raven peak, Mach 1.16")])
+
+# --- GravityLearn ------------------------------------------------------------
+log = KSP / "flight_log_20260727_163041.csv"
+def ksp(src, *names):
+    d = cols(log, "t_s", *names, where=lambda r: r["source"] == src)
+    return d[:, d[0] >= 0]
+pr, ac = ksp("pred", "apoapsis_m"), ksp("act", "apoapsis_m")
+charts["gravityApoapsis"] = dict(
+    title="Apoapsis during the ascent",
+    xLabel="Seconds since pitch-over", yLabel="Apoapsis (km)", xDigits=0, yDigits=1,
+    series=[dict(name="Simulated", color=BLUE, points=pts(pr[0], pr[1] / 1000, 0, 140, 160, 1, 2)),
+            dict(name="Flown in KSP", color=ORANGE, points=pts(ac[0], ac[1] / 1000, 0, 140, 200, 1, 2))],
+    refs=[dict(y=80, label="Target 80 km")])
+pr = ksp("pred", "altitude_m", "pitch_cmd_deg", "phase_burn"); pr = pr[:, pr[3] > 0]
+ac = ksp("act", "altitude_m", "pitch_deg", "phase_burn"); ac = ac[:, ac[3] > 0]
+charts["gravityPitch"] = dict(
+    title="Pitch schedule: optimized against flown",
+    xLabel="Altitude (km)", yLabel="Pitch (°)", xDigits=1, yDigits=1,
+    series=[dict(name="Optimized schedule", color=BLUE, points=pts(pr[1] / 1000, pr[2], 0, 40, 120, 2, 2)),
+            dict(name="Flown in KSP", color=ORANGE, dash=True, points=pts(ac[1] / 1000, ac[2], 0, 40, 160, 2, 2))])
+
+for k, c in charts.items():
+    for s in c["series"]:
+        print(k, s["name"], len(s["points"]), "peak", max(y for _, y in s["points"]), "last", s["points"][-1])
+
+OUT.write_text(
+    "/* Generated by scripts/build_flight_charts.py from the raw flight logs.\n"
+    " * Don't edit by hand: re-run the script. */\n\n"
+    'import type { ChartData } from "../components/LineChart";\n\n'
+    "export const CHARTS = " + json.dumps(charts, ensure_ascii=False, separators=(",", ":")) +
+    " satisfies Record<string, ChartData>;\n\nexport type ChartId = keyof typeof CHARTS;\n")
+print(OUT, OUT.stat().st_size)
